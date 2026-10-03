@@ -8,16 +8,49 @@ import GameBoard from './components/GameBoard';
 export default function App() {
   const [room, setRoom] = useState(null);
   const [myPlayerId, setMyPlayerId] = useState(null);
+  const [isReconnecting, setIsReconnecting] = useState(() => {
+    return !!sessionStorage.getItem('whoami_session');
+  });
 
   useEffect(() => {
+    const attemptReconnect = () => {
+      try {
+        const raw = sessionStorage.getItem('whoami_session');
+        if (raw) {
+          const session = JSON.parse(raw);
+          if (session.roomCode && session.playerName) {
+            socket.emit('join_room', session, (res) => {
+              setIsReconnecting(false);
+              if (!res.success) {
+                // Room expired or not found
+                sessionStorage.removeItem('whoami_session');
+                setRoom(null);
+              }
+            });
+            return;
+          }
+        }
+      } catch (err) {
+        sessionStorage.removeItem('whoami_session');
+      }
+      setIsReconnecting(false);
+    };
+
     socket.on('connect', () => {
       setMyPlayerId(socket.id);
+      attemptReconnect();
     });
 
     socket.on('room_update', (updatedRoom) => {
       setRoom(updatedRoom);
       setMyPlayerId(socket.id);
+      setIsReconnecting(false);
     });
+
+    if (socket.connected) {
+      setMyPlayerId(socket.id);
+      attemptReconnect();
+    }
 
     return () => {
       socket.off('connect');
@@ -26,8 +59,8 @@ export default function App() {
   }, []);
 
   const handleLeaveRoom = () => {
-    socket.disconnect();
-    socket.connect();
+    sessionStorage.removeItem('whoami_session');
+    socket.emit('leave_room');
     setRoom(null);
     window.history.replaceState({}, document.title, window.location.pathname);
   };
@@ -35,7 +68,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-orange-500 selection:text-white">
       <main className="flex-1">
-        {!room && (
+        {isReconnecting && !room && (
+          <div className="flex flex-col items-center justify-center min-h-[80vh] gap-3 text-slate-400">
+            <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-sm font-medium">Menyambungkan kembali ke game...</span>
+          </div>
+        )}
+
+        {!isReconnecting && !room && (
           <Home
             onJoinSuccess={() => {}}
           />

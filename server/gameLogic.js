@@ -19,7 +19,8 @@ export function generateRoomCode() {
 // Preset avatars
 export const AVATARS = ['🍥', '⚡', '🌸', '🍃', '🔥', '🗡️', '👁️', '🐸', '🦊', '🍙'];
 
-export function createRoom(roomCode, hostSocketId, hostName) {
+export function createRoom(roomCode, hostSocketId, hostName, playerToken = null) {
+  const token = playerToken || Math.random().toString(36).slice(2);
   const room = {
     code: roomCode,
     hostId: hostSocketId,
@@ -31,6 +32,7 @@ export function createRoom(roomCode, hostSocketId, hostName) {
     players: [
       {
         id: hostSocketId,
+        token: token,
         name: hostName.trim() || 'Hokage',
         avatar: AVATARS[0],
         isHost: true,
@@ -46,22 +48,29 @@ export function createRoom(roomCode, hostSocketId, hostName) {
   };
 
   rooms.set(roomCode, room);
-  return room;
+  return { room, playerToken: token };
 }
 
-export function joinRoom(roomCode, socketId, playerName) {
+export function joinRoom(roomCode, socketId, playerName, playerToken = null) {
   const room = rooms.get(roomCode.toUpperCase());
-  if (!room) return { error: 'Room tidak ditemukan!' };
+  if (!room) return { error: 'Room tidak ditemukan atau sudah berakhir!' };
 
-  // Check if player is reconnecting
-  const existingPlayer = room.players.find(p => p.name.toLowerCase() === playerName.trim().toLowerCase());
+  // Reconnection check: match by persistent token or by name
+  let existingPlayer = null;
+  if (playerToken) {
+    existingPlayer = room.players.find(p => p.token === playerToken);
+  }
+  if (!existingPlayer && playerName) {
+    existingPlayer = room.players.find(p => p.name.toLowerCase() === playerName.trim().toLowerCase());
+  }
+
   if (existingPlayer) {
     existingPlayer.id = socketId;
     existingPlayer.isConnected = true;
     if (existingPlayer.isHost) {
       room.hostId = socketId;
     }
-    return { room };
+    return { room, playerToken: existingPlayer.token };
   }
 
   if (room.players.length >= 12) {
@@ -75,9 +84,11 @@ export function joinRoom(roomCode, socketId, playerName) {
   }
 
   const avatar = AVATARS[room.players.length % AVATARS.length];
+  const token = playerToken || Math.random().toString(36).slice(2);
 
   const newPlayer = {
     id: socketId,
+    token: token,
     name: finalName,
     avatar,
     isHost: false,
@@ -99,38 +110,39 @@ export function joinRoom(roomCode, socketId, playerName) {
   }
 
   room.players.push(newPlayer);
-  return { room };
+  return { room, playerToken: token };
 }
 
-export function removePlayer(socketId) {
+export function removePlayer(socketId, explicitLeave = false) {
   for (const [code, room] of rooms.entries()) {
     const playerIndex = room.players.findIndex(p => p.id === socketId);
     if (playerIndex !== -1) {
       const removedPlayer = room.players[playerIndex];
 
-      if (room.status === 'LOBBY') {
+      if (explicitLeave) {
+        // Player clicked "Keluar"
         room.players.splice(playerIndex, 1);
-      } else {
-        removedPlayer.isConnected = false;
-      }
-
-      const activePlayers = room.players.filter(p => p.isConnected);
-      if (activePlayers.length === 0) {
-        rooms.delete(code);
-        return null;
-      }
-
-      if (removedPlayer.isHost && activePlayers.length > 0) {
-        removedPlayer.isHost = false;
-        activePlayers[0].isHost = true;
-        room.hostId = activePlayers[0].id;
-      }
-
-      if (room.status === 'PLAYING') {
-        const currentTurnPlayer = room.players[room.currentTurnIndex];
-        if (currentTurnPlayer && currentTurnPlayer.id === socketId) {
-          nextTurn(room);
+        if (room.players.length === 0) {
+          rooms.delete(code);
+          return null;
         }
+        if (removedPlayer.isHost && room.players.length > 0) {
+          room.players[0].isHost = true;
+          room.hostId = room.players[0].id;
+        }
+      } else {
+        // Refresh or temporary disconnect: keep player in room
+        removedPlayer.isConnected = false;
+
+        // Clean up room only if NO ONE reconnects for 2 minutes
+        setTimeout(() => {
+          const currentRoom = rooms.get(code);
+          if (!currentRoom) return;
+          const anyConnected = currentRoom.players.some(p => p.isConnected);
+          if (!anyConnected) {
+            rooms.delete(code);
+          }
+        }, 120000);
       }
 
       return { room, code };
@@ -166,7 +178,6 @@ export function derangementShuffle(submissions) {
 
 export function dealCards(room) {
   const deck = loadDeck(room.settings.deckId);
-  // Robust shuffle (Fisher-Yates)
   const shuffledDeck = [...deck];
   for (let i = shuffledDeck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

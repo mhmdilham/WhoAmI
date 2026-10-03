@@ -29,6 +29,11 @@ export default function Home({ onJoinSuccess }) {
     socket.emit('create_room', { hostName: name.trim() }, (response) => {
       setLoading(false);
       if (response.success) {
+        sessionStorage.setItem('whoami_session', JSON.stringify({
+          roomCode: response.roomCode,
+          playerName: name.trim(),
+          playerToken: response.playerToken
+        }));
         onJoinSuccess({ roomCode: response.roomCode, playerName: name.trim() });
       } else {
         setError(response.error || 'Gagal membuat room!');
@@ -52,6 +57,11 @@ export default function Home({ onJoinSuccess }) {
     socket.emit('join_room', { roomCode: roomCode.trim().toUpperCase(), playerName: name.trim() }, (response) => {
       setLoading(false);
       if (response.success) {
+        sessionStorage.setItem('whoami_session', JSON.stringify({
+          roomCode: response.roomCode,
+          playerName: name.trim(),
+          playerToken: response.playerToken
+        }));
         onJoinSuccess({ roomCode: response.roomCode, playerName: name.trim() });
       } else {
         setError(response.error || 'Gagal bergabung ke room!');

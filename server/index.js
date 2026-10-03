@@ -62,19 +62,19 @@ io.on('connection', (socket) => {
   let currentRoomCode = null;
 
   // 1. Create Room
-  socket.on('create_room', ({ hostName }, callback) => {
+  socket.on('create_room', ({ hostName, playerToken }, callback) => {
     const code = generateRoomCode();
-    const room = createRoom(code, socket.id, hostName);
+    const { room, playerToken: token } = createRoom(code, socket.id, hostName, playerToken);
     currentRoomCode = code;
     socket.join(code);
 
-    if (callback) callback({ success: true, roomCode: code });
+    if (callback) callback({ success: true, roomCode: code, playerToken: token });
     broadcastRoom(room);
   });
 
-  // 2. Join Room
-  socket.on('join_room', ({ roomCode, playerName }, callback) => {
-    const result = joinRoom(roomCode, socket.id, playerName);
+  // 2. Join / Reconnect Room
+  socket.on('join_room', ({ roomCode, playerName, playerToken }, callback) => {
+    const result = joinRoom(roomCode, socket.id, playerName, playerToken);
     if (result.error) {
       if (callback) callback({ success: false, error: result.error });
       return;
@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
     currentRoomCode = roomCode.toUpperCase();
     socket.join(currentRoomCode);
 
-    if (callback) callback({ success: true, roomCode: currentRoomCode });
+    if (callback) callback({ success: true, roomCode: currentRoomCode, playerToken: result.playerToken });
     broadcastRoom(result.room);
   });
 
@@ -236,10 +236,22 @@ io.on('connection', (socket) => {
     if (callback) callback({ success: true });
   });
 
-  // 13. Disconnect
+  // 12. Explicit Leave Room (When player clicks "Keluar")
+  socket.on('leave_room', () => {
+    if (currentRoomCode) {
+      const result = removePlayer(socket.id, true);
+      socket.leave(currentRoomCode);
+      currentRoomCode = null;
+      if (result && result.room) {
+        broadcastRoom(result.room);
+      }
+    }
+  });
+
+  // 13. Disconnect (Browser refresh or network blip)
   socket.on('disconnect', () => {
     if (currentRoomCode) {
-      const result = removePlayer(socket.id);
+      const result = removePlayer(socket.id, false); // graceful disconnect
       if (result && result.room) {
         broadcastRoom(result.room);
       }
