@@ -10,14 +10,18 @@ import {
   RotateCcw,
   Eye,
   EyeOff,
-  Home
+  Home,
+  Copy,
+  Check
 } from 'lucide-react';
 import { socket } from '../utils/socket';
+import { copyToClipboard } from '../utils/clipboard';
 import GuessModal from './GuessModal';
 
 export default function GameBoard({ room, myPlayerId, onLeave }) {
   const [isGuessModalOpen, setIsGuessModalOpen] = useState(false);
   const [notes, setNotes] = useState('');
+  const [copiedCode, setCopiedCode] = useState(false);
 
   const isHost = room.hostId === myPlayerId;
   const myPlayer = room.players.find(p => p.id === myPlayerId);
@@ -60,15 +64,33 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
     socket.emit('back_to_lobby');
   };
 
+  const handleCopyCode = () => {
+    copyToClipboard(room.code).then(() => {
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    });
+  };
+
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 py-4 min-h-[95vh]">
       {/* Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl px-4 py-3 mb-4 shadow-lg">
         <div className="flex items-center gap-3">
-          <div className="bg-orange-500/10 border border-orange-500/30 px-3 py-1 rounded-xl flex items-center gap-2">
-            <span className="text-[11px] text-orange-400 font-semibold uppercase">ROOM</span>
+          <button
+            onClick={handleCopyCode}
+            className="bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 px-3 py-1.5 rounded-xl flex items-center gap-2 cursor-pointer transition-all group"
+            title="Klik untuk salin kode room"
+          >
+            <span className="text-[11px] text-orange-400 font-semibold uppercase">ROOM:</span>
             <span className="font-mono text-base font-black text-orange-400 tracking-wider">{room.code}</span>
-          </div>
+            {copiedCode ? (
+              <span className="text-[11px] font-bold text-green-400 flex items-center gap-0.5">
+                <Check className="w-3.5 h-3.5" /> Tersalin!
+              </span>
+            ) : (
+              <Copy className="w-3.5 h-3.5 text-orange-400/70 group-hover:text-orange-400" />
+            )}
+          </button>
 
           <span className="text-xs text-slate-400 font-medium hidden sm:inline">
             Mode Santai Tongkrongan ☕

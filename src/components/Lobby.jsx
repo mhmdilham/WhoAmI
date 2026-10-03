@@ -1,19 +1,29 @@
 import React, { useState } from 'react';
-import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut } from 'lucide-react';
+import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut, Link2 } from 'lucide-react';
 import { socket } from '../utils/socket';
+import { copyToClipboard } from '../utils/clipboard';
 
 export default function Lobby({ room, myPlayerId, onLeave }) {
-  const [copied, setCopied] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
   const [starting, setStarting] = useState(false);
 
   const isHost = room.hostId === myPlayerId;
   const myPlayer = room.players.find(p => p.id === myPlayerId);
 
+  const handleCopyCode = () => {
+    copyToClipboard(room.code).then(() => {
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    });
+  };
+
   const handleCopyLink = () => {
     const inviteUrl = `${window.location.origin}/?room=${room.code}`;
-    navigator.clipboard.writeText(inviteUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    copyToClipboard(inviteUrl).then(() => {
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    });
   };
 
   const handleUpdateMode = (mode) => {
@@ -32,19 +42,33 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
   return (
     <div className="flex flex-col max-w-xl mx-auto px-4 py-6 min-h-[90vh]">
       {/* Top Bar */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div className="bg-orange-500/10 border border-orange-500/30 px-3 py-1 rounded-xl flex items-center gap-2">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* 1. Salin Kode Room Saja */}
+          <button
+            onClick={handleCopyCode}
+            className="bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 px-3 py-1.5 rounded-xl flex items-center gap-2 transition-all cursor-pointer group"
+            title="Klik untuk salin 4 huruf kode saja"
+          >
             <span className="text-xs text-orange-400 font-semibold uppercase tracking-wider">ROOM:</span>
             <span className="font-mono text-lg font-black text-orange-400 tracking-widest">{room.code}</span>
-          </div>
+            {copiedCode ? (
+              <span className="text-[11px] font-bold text-green-400 flex items-center gap-1">
+                <Check className="w-3.5 h-3.5" /> Tersalin!
+              </span>
+            ) : (
+              <Copy className="w-3.5 h-3.5 text-orange-400/70 group-hover:text-orange-400 transition-colors" />
+            )}
+          </button>
+
+          {/* 2. Salin Link Undangan Lengkap */}
           <button
             onClick={handleCopyLink}
-            className="p-2.5 rounded-xl bg-slate-850 hover:bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer"
-            title="Salin Link Invite"
+            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer"
+            title="Salin link undangan lengkap"
           >
-            {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-            <span className="hidden sm:inline">{copied ? 'Tersalin!' : 'Salin Link'}</span>
+            {copiedLink ? <Check className="w-4 h-4 text-green-400" /> : <Link2 className="w-4 h-4" />}
+            <span className="hidden sm:inline">{copiedLink ? 'Link Tersalin!' : 'Salin Link'}</span>
           </button>
         </div>
 
