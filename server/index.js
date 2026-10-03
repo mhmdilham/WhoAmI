@@ -15,7 +15,6 @@ import {
   submitSecretCard,
   dealCards,
   nextTurn,
-  voteAnswer,
   evaluateGuess,
   getMaskedRoomState
 } from './gameLogic.js';
@@ -112,7 +111,6 @@ io.on('connection', (socket) => {
 
     if (callback) callback({ success: true });
     broadcastRoom(room);
-    io.to(currentRoomCode).emit('sfx_trigger', { type: 'GAME_START' });
   });
 
   // 5. Submit Secret Card (Custom Mode)
@@ -129,26 +127,9 @@ io.on('connection', (socket) => {
 
     if (callback) callback({ success: true });
     broadcastRoom(room);
-
-    if (result.allSubmitted) {
-      io.to(currentRoomCode).emit('sfx_trigger', { type: 'ALL_SUBMITTED' });
-    }
   });
 
-  // 6. Vote / Answer (YES / NO / MAYBE)
-  socket.on('vote_answer', ({ voteType }) => {
-    if (!currentRoomCode) return;
-    const room = rooms.get(currentRoomCode);
-    if (!room) return;
-
-    voteAnswer(room, socket.id, voteType);
-    broadcastRoom(room);
-
-    // Broadcast sound effect to everyone in room!
-    io.to(currentRoomCode).emit('sfx_trigger', { type: voteType, senderId: socket.id });
-  });
-
-  // 7. End / Pass Turn
+  // 6. End / Pass Turn
   socket.on('end_turn', () => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -156,10 +137,9 @@ io.on('connection', (socket) => {
 
     nextTurn(room);
     broadcastRoom(room);
-    io.to(currentRoomCode).emit('sfx_trigger', { type: 'NEXT_TURN' });
   });
 
-  // 8. Guess Identity (by player input or host confirmation)
+  // 7. Guess Identity (by player input or host confirmation)
   socket.on('guess_identity', ({ guessName }, callback) => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -173,15 +153,9 @@ io.on('connection', (socket) => {
 
     if (callback) callback({ success: true, correct: result.correct });
     broadcastRoom(room);
-
-    if (result.correct) {
-      io.to(currentRoomCode).emit('sfx_trigger', { type: 'WINNER', playerName: result.player.name });
-    } else {
-      io.to(currentRoomCode).emit('sfx_trigger', { type: 'WRONG_GUESS', playerName: result.player.name });
-    }
   });
 
-  // 9. Manual Confirm Guess (By Host or verbal confirmation in Discord)
+  // 8. Manual Confirm Guess (By Host when friend guesses verbally in Discord voice)
   socket.on('manual_confirm_guess', ({ targetPlayerId, isCorrect }) => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -193,16 +167,14 @@ io.on('connection', (socket) => {
     if (isCorrect) {
       targetPlayer.isGuessed = true;
       nextTurn(room);
-      io.to(currentRoomCode).emit('sfx_trigger', { type: 'WINNER', playerName: targetPlayer.name });
     } else {
       nextTurn(room);
-      io.to(currentRoomCode).emit('sfx_trigger', { type: 'WRONG_GUESS', playerName: targetPlayer.name });
     }
 
     broadcastRoom(room);
   });
 
-  // 10. Save Personal Scratchpad Notes
+  // 9. Save Personal Scratchpad Notes
   socket.on('save_notes', ({ notes }) => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -214,7 +186,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  // 11. Host Action: Bagi Kartu Baru / Acak Ulang Langsung
+  // 10. Host Action: Bagi Kartu Baru / Acak Ulang Langsung
   socket.on('reshuffle_cards', () => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -234,10 +206,9 @@ io.on('connection', (socket) => {
     }
 
     broadcastRoom(room);
-    io.to(currentRoomCode).emit('sfx_trigger', { type: 'GAME_START' });
   });
 
-  // 12. Host Action: Buka Semua Kartu
+  // 11. Host Action: Buka/Tutup Semua Kartu
   socket.on('reveal_all_cards', () => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -247,7 +218,7 @@ io.on('connection', (socket) => {
     broadcastRoom(room);
   });
 
-  // 13. Host Action: Kembali ke Lobby
+  // 12. Host Action: Kembali ke Lobby
   socket.on('back_to_lobby', () => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
@@ -255,7 +226,6 @@ io.on('connection', (socket) => {
 
     room.status = 'LOBBY';
     room.revealedAll = false;
-    room.votes = {};
     room.players.forEach(p => {
       p.isGuessed = false;
       p.assignedCard = null;
@@ -264,10 +234,9 @@ io.on('connection', (socket) => {
     });
 
     broadcastRoom(room);
-    io.to(currentRoomCode).emit('sfx_trigger', { type: 'RESTART' });
   });
 
-  // 12. Disconnect
+  // 13. Disconnect
   socket.on('disconnect', () => {
     if (currentRoomCode) {
       const result = removePlayer(socket.id);

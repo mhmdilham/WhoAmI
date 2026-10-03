@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Lock, Send, CheckCircle2, Clock, Sparkles } from 'lucide-react';
 import { socket } from '../utils/socket';
-import { sfx } from '../utils/sfx';
 
 export default function SecretInput({ room, myPlayerId }) {
   const [cardName, setCardName] = useState('');
@@ -22,7 +21,6 @@ export default function SecretInput({ room, myPlayerId }) {
 
     setError('');
     setSubmitting(true);
-    sfx.playTurn();
 
     socket.emit(
       'submit_secret_card',
@@ -31,7 +29,6 @@ export default function SecretInput({ room, myPlayerId }) {
         setSubmitting(false);
         if (res.success) {
           setHasSubmitted(true);
-          sfx.playYes();
         } else {
           setError(res.error || 'Gagal mengirim kartu rahasia');
         }

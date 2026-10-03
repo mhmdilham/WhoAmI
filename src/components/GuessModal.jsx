@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { HelpCircle, X, Check, AlertCircle } from 'lucide-react';
 import { socket } from '../utils/socket';
-import { sfx } from '../utils/sfx';
 
 export default function GuessModal({ isOpen, onClose }) {
   const [guess, setGuess] = useState('');
@@ -20,20 +19,18 @@ export default function GuessModal({ isOpen, onClose }) {
       if (res.success) {
         if (res.correct) {
           setFeedback({ type: 'success', msg: 'TEBAKANMU BENAR! 🎉 Kamu berhasil mengungkap identitasmu!' });
-          sfx.playWin();
           setTimeout(() => {
             onClose();
             setFeedback(null);
             setGuess('');
-          }, 2000);
+          }, 1500);
         } else {
           setFeedback({ type: 'error', msg: 'SALAH! 😢 Identitasmu bukan itu. Giliranmu berakhir!' });
-          sfx.playNo();
           setTimeout(() => {
             onClose();
             setFeedback(null);
             setGuess('');
-          }, 2000);
+          }, 1500);
         }
       }
     });

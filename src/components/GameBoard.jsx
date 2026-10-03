@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Volume2,
-  VolumeX,
   LogOut,
   HelpCircle,
   SkipForward,
-  CheckCircle,
-  XCircle,
-  HelpCircle as MaybeCircle,
   Edit3,
   Crown,
   Sparkles,
@@ -18,13 +13,11 @@ import {
   Home
 } from 'lucide-react';
 import { socket } from '../utils/socket';
-import { sfx } from '../utils/sfx';
 import GuessModal from './GuessModal';
 
 export default function GameBoard({ room, myPlayerId, onLeave }) {
   const [isGuessModalOpen, setIsGuessModalOpen] = useState(false);
   const [notes, setNotes] = useState('');
-  const [muted, setMuted] = useState(false);
 
   const isHost = room.hostId === myPlayerId;
   const myPlayer = room.players.find(p => p.id === myPlayerId);
@@ -43,18 +36,8 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
     socket.emit('save_notes', { notes: val });
   };
 
-  const handleVote = (voteType) => {
-    socket.emit('vote_answer', { voteType });
-  };
-
   const handleEndTurn = () => {
     socket.emit('end_turn');
-    sfx.playTurn();
-  };
-
-  const handleToggleMute = () => {
-    const isMuted = sfx.toggleMute();
-    setMuted(isMuted);
   };
 
   const handleHostConfirmGuess = (targetPlayerId, isCorrect) => {
@@ -65,26 +48,17 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
   const handleReshuffleCards = () => {
     if (!isHost) return;
     socket.emit('reshuffle_cards');
-    sfx.playStart();
   };
 
   const handleToggleReveal = () => {
     if (!isHost) return;
     socket.emit('reveal_all_cards');
-    sfx.playTurn();
   };
 
   const handleBackToLobby = () => {
     if (!isHost) return;
     socket.emit('back_to_lobby');
-    sfx.playTurn();
   };
-
-  // Vote counts
-  const voteList = Object.values(room.votes || {});
-  const yesCount = voteList.filter(v => v === 'YES').length;
-  const noCount = voteList.filter(v => v === 'NO').length;
-  const maybeCount = voteList.filter(v => v === 'MAYBE').length;
 
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 py-4 min-h-[95vh]">
@@ -101,7 +75,7 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
           </span>
         </div>
 
-        {/* Host Controls & Actions */}
+        {/* Host Controls & Leave */}
         <div className="flex items-center gap-2 flex-wrap">
           {isHost && (
             <div className="flex items-center gap-1.5 bg-slate-950/70 p-1 rounded-xl border border-slate-800">
@@ -139,14 +113,6 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
           )}
 
           <button
-            onClick={handleToggleMute}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer"
-            title={muted ? 'Nyalakan Suara' : 'Matikan Suara'}
-          >
-            {muted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-          </button>
-
-          <button
             onClick={onLeave}
             className="p-2 rounded-xl bg-slate-800 hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-all cursor-pointer"
             title="Keluar Permainan"
@@ -179,13 +145,13 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
               <p className="text-xs text-slate-300 mt-0.5">
                 {isMyTurn
                   ? 'Nyalakan mic di Discord dan tanyakan pertanyaan sepuasnya (contoh: "Apakah aku ninja Konoha?")'
-                  : 'Dengarkan di Voice/Discord, lalu tekan tombol respon di samping!'}
+                  : 'Dengarkan pertanyaannya di Voice/Discord, lalu jawab langsung lewat mic kalian!'}
               </p>
             </div>
           </div>
 
           {/* Action buttons on Turn Banner */}
-          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-center sm:justify-end">
             {isMyTurn ? (
               <>
                 <button
@@ -205,29 +171,9 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
                 </button>
               </>
             ) : (
-              /* Buzzer buttons for friends */
-              <div className="flex items-center gap-2 w-full justify-center sm:justify-end">
-                <button
-                  onClick={() => handleVote('YES')}
-                  className="flex-1 sm:flex-none py-2 px-3.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-400 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all active:scale-95"
-                >
-                  <CheckCircle className="w-4 h-4" />
-                  <span>YA ({yesCount})</span>
-                </button>
-                <button
-                  onClick={() => handleVote('NO')}
-                  className="flex-1 sm:flex-none py-2 px-3.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-400 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all active:scale-95"
-                >
-                  <XCircle className="w-4 h-4" />
-                  <span>TIDAK ({noCount})</span>
-                </button>
-                <button
-                  onClick={() => handleVote('MAYBE')}
-                  className="flex-1 sm:flex-none py-2 px-3.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-400 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all active:scale-95"
-                >
-                  <MaybeCircle className="w-4 h-4" />
-                  <span>RAGU ({maybeCount})</span>
-                </button>
+              <div className="px-3.5 py-2 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-400 text-xs flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Jawab langsung di mic Discord 🗣️</span>
               </div>
             )}
           </div>

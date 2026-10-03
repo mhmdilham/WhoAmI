@@ -43,7 +43,6 @@ export function createRoom(roomCode, hostSocketId, hostName) {
       }
     ],
     currentTurnIndex: 0,
-    votes: {}, // { [playerId]: 'YES' | 'NO' | 'MAYBE' }
     history: []
   };
 
@@ -67,7 +66,6 @@ export function joinRoom(roomCode, socketId, playerName) {
     return { error: 'Room sudah penuh (maksimal 12 pemain)!' };
   }
 
-  // Check unique name in room
   let finalName = playerName.trim() || `Shinobi ${room.players.length + 1}`;
   const isDuplicate = room.players.some(p => p.name.toLowerCase() === finalName.toLowerCase());
   if (isDuplicate) {
@@ -88,7 +86,6 @@ export function joinRoom(roomCode, socketId, playerName) {
     notes: ''
   };
 
-  // If game is currently playing and mode is preset, assign a card so they can join right away
   if (room.status === 'PLAYING' && room.settings.mode === 'preset') {
     const deck = loadDeck(room.settings.deckId);
     const randomCard = deck[Math.floor(Math.random() * deck.length)];
@@ -115,21 +112,18 @@ export function removePlayer(socketId) {
         removedPlayer.isConnected = false;
       }
 
-      // If room is empty, delete it
       const activePlayers = room.players.filter(p => p.isConnected);
       if (activePlayers.length === 0) {
         rooms.delete(code);
         return null;
       }
 
-      // If host left, reassign host
       if (removedPlayer.isHost && activePlayers.length > 0) {
         removedPlayer.isHost = false;
         activePlayers[0].isHost = true;
         room.hostId = activePlayers[0].id;
       }
 
-      // If current turn player left, advance turn
       if (room.status === 'PLAYING') {
         const currentTurnPlayer = room.players[room.currentTurnIndex];
         if (currentTurnPlayer && currentTurnPlayer.id === socketId) {
@@ -183,7 +177,6 @@ export function dealCards(room) {
     player.notes = '';
   });
   room.revealedAll = false;
-  room.votes = {};
   room.currentTurnIndex = 0;
 }
 
@@ -198,7 +191,6 @@ export function startGame(room) {
     p.submittedCard = null;
     p.assignedCard = null;
   });
-  room.votes = {};
   room.revealedAll = false;
   room.currentTurnIndex = 0;
 
@@ -255,7 +247,6 @@ export function submitSecretCard(room, socketId, cardName, hint = '') {
 export function nextTurn(room) {
   const unguessedPlayers = room.players.filter(p => p.isConnected && !p.isGuessed);
   
-  // If everyone has guessed, rotate among all connected players
   const targetPool = unguessedPlayers.length > 0 
     ? unguessedPlayers 
     : room.players.filter(p => p.isConnected);
@@ -278,14 +269,7 @@ export function nextTurn(room) {
   }
 
   room.currentTurnIndex = nextIndex;
-  room.votes = {};
   return room;
-}
-
-export function voteAnswer(room, voterSocketId, voteType) {
-  if (room.status !== 'PLAYING') return null;
-  room.votes[voterSocketId] = voteType;
-  return room.votes;
 }
 
 export function evaluateGuess(room, guesserSocketId, guessName) {
@@ -322,7 +306,6 @@ export function getMaskedRoomState(room, requestingSocketId) {
     allGuessed: room.players.every(p => !p.isConnected || p.isGuessed),
     currentTurnIndex: room.currentTurnIndex,
     currentTurnPlayerId: room.players[room.currentTurnIndex]?.id || null,
-    votes: room.votes,
     players: room.players.map(p => {
       const isSelf = p.id === requestingSocketId;
       let visibleCard = null;

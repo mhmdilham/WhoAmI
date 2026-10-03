@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Users, ArrowRight, Shield, Volume2, Gamepad2 } from 'lucide-react';
+import { Sparkles, Users, ArrowRight, Shield, Mic, Gamepad2 } from 'lucide-react';
 import { socket } from '../utils/socket';
-import { sfx } from '../utils/sfx';
 
 export default function Home({ onJoinSuccess }) {
   const [name, setName] = useState('');
@@ -26,7 +25,6 @@ export default function Home({ onJoinSuccess }) {
     }
     setError('');
     setLoading(true);
-    sfx.init();
 
     socket.emit('create_room', { hostName: name.trim() }, (response) => {
       setLoading(false);
@@ -50,7 +48,6 @@ export default function Home({ onJoinSuccess }) {
     }
     setError('');
     setLoading(true);
-    sfx.init();
 
     socket.emit('join_room', { roomCode: roomCode.trim().toUpperCase(), playerName: name.trim() }, (response) => {
       setLoading(false);
@@ -73,7 +70,7 @@ export default function Home({ onJoinSuccess }) {
           WHO AM I?
         </h1>
         <p className="text-slate-400 text-sm mt-2 max-w-xs mx-auto">
-          Tebak karakter di jidatmu! Mainkan lewat mic Discord atau saat ngumpul santai.
+          Tebak karakter di jidatmu! Ngobrol langsung lewat mic Discord atau saat ngumpul santai.
         </p>
       </div>
 
@@ -143,8 +140,8 @@ export default function Home({ onJoinSuccess }) {
       {/* Feature Badges */}
       <div className="grid grid-cols-2 gap-3 w-full mt-6 text-xs text-slate-400">
         <div className="p-3 rounded-2xl bg-slate-900/40 border border-slate-800/80 flex items-center gap-2.5">
-          <Volume2 className="w-4 h-4 text-orange-400 shrink-0" />
-          <span>Buzzer suara realtime Ya / Tidak di web</span>
+          <Mic className="w-4 h-4 text-orange-400 shrink-0" />
+          <span>Tanya jawab langsung di mic Discord</span>
         </div>
         <div className="p-3 rounded-2xl bg-slate-900/40 border border-slate-800/80 flex items-center gap-2.5">
           <Shield className="w-4 h-4 text-amber-400 shrink-0" />

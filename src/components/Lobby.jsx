@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut } from 'lucide-react';
 import { socket } from '../utils/socket';
-import { sfx } from '../utils/sfx';
 
 export default function Lobby({ room, myPlayerId, onLeave }) {
   const [copied, setCopied] = useState(false);
@@ -14,20 +13,17 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
     const inviteUrl = `${window.location.origin}/?room=${room.code}`;
     navigator.clipboard.writeText(inviteUrl);
     setCopied(true);
-    sfx.playTurn();
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleUpdateMode = (mode) => {
     if (!isHost) return;
     socket.emit('update_settings', { settings: { mode } });
-    sfx.playTurn();
   };
 
   const handleStartGame = () => {
     if (!isHost || room.players.length < 2) return;
     setStarting(true);
-    sfx.playStart();
     socket.emit('start_game', {}, (res) => {
       setStarting(false);
     });
