@@ -187,10 +187,16 @@ io.on('connection', (socket) => {
   });
 
   // 10. Host Action: Bagi Kartu Baru / Acak Ulang Langsung
-  socket.on('reshuffle_cards', () => {
+  socket.on('reshuffle_cards', (callback) => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
-    if (!room || room.hostId !== socket.id) return;
+    if (!room) return;
+
+    const player = room.players.find(p => p.id === socket.id);
+    if (!player || (!player.isHost && room.hostId !== socket.id)) {
+      if (callback) callback({ success: false, error: 'Hanya host yang bisa mengacak kartu!' });
+      return;
+    }
 
     if (room.settings.mode === 'custom') {
       room.status = 'SECRET_INPUT';
@@ -206,26 +212,19 @@ io.on('connection', (socket) => {
     }
 
     broadcastRoom(room);
+    if (callback) callback({ success: true });
   });
 
-  // 11. Host Action: Buka/Tutup Semua Kartu
-  socket.on('reveal_all_cards', () => {
+  // 11. Host Action: Kembali ke Lobby
+  socket.on('back_to_lobby', (callback) => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
-    if (!room || room.hostId !== socket.id) return;
+    if (!room) return;
 
-    room.revealedAll = !room.revealedAll;
-    broadcastRoom(room);
-  });
-
-  // 12. Host Action: Kembali ke Lobby
-  socket.on('back_to_lobby', () => {
-    if (!currentRoomCode) return;
-    const room = rooms.get(currentRoomCode);
-    if (!room || room.hostId !== socket.id) return;
+    const player = room.players.find(p => p.id === socket.id);
+    if (!player || (!player.isHost && room.hostId !== socket.id)) return;
 
     room.status = 'LOBBY';
-    room.revealedAll = false;
     room.players.forEach(p => {
       p.isGuessed = false;
       p.assignedCard = null;
@@ -234,6 +233,7 @@ io.on('connection', (socket) => {
     });
 
     broadcastRoom(room);
+    if (callback) callback({ success: true });
   });
 
   // 13. Disconnect

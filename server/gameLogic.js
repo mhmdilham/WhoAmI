@@ -24,7 +24,6 @@ export function createRoom(roomCode, hostSocketId, hostName) {
     code: roomCode,
     hostId: hostSocketId,
     status: 'LOBBY', // 'LOBBY' | 'SECRET_INPUT' | 'PLAYING'
-    revealedAll: false,
     settings: {
       mode: 'preset', // 'preset' | 'custom'
       deckId: 'naruto'
@@ -59,6 +58,9 @@ export function joinRoom(roomCode, socketId, playerName) {
   if (existingPlayer) {
     existingPlayer.id = socketId;
     existingPlayer.isConnected = true;
+    if (existingPlayer.isHost) {
+      room.hostId = socketId;
+    }
     return { room };
   }
 
@@ -164,7 +166,12 @@ export function derangementShuffle(submissions) {
 
 export function dealCards(room) {
   const deck = loadDeck(room.settings.deckId);
-  const shuffledDeck = [...deck].sort(() => Math.random() - 0.5);
+  // Robust shuffle (Fisher-Yates)
+  const shuffledDeck = [...deck];
+  for (let i = shuffledDeck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+  }
 
   room.players.forEach((player, idx) => {
     const cardData = shuffledDeck[idx % shuffledDeck.length];
@@ -176,7 +183,6 @@ export function dealCards(room) {
     player.isGuessed = false;
     player.notes = '';
   });
-  room.revealedAll = false;
   room.currentTurnIndex = 0;
 }
 
@@ -191,7 +197,6 @@ export function startGame(room) {
     p.submittedCard = null;
     p.assignedCard = null;
   });
-  room.revealedAll = false;
   room.currentTurnIndex = 0;
 
   if (room.settings.mode === 'custom') {
@@ -212,7 +217,7 @@ export function submitSecretCard(room, socketId, cardName, hint = '') {
 
   player.submittedCard = {
     name: cardName.trim(),
-    hint: hint.trim() || 'Karakter Rahasia Tongkrongan'
+    hint: hint.trim() || 'Karakter Rahasia'
   };
 
   const connectedPlayers = room.players.filter(p => p.isConnected);
@@ -238,7 +243,6 @@ export function submitSecretCard(room, socketId, cardName, hint = '') {
     });
 
     room.status = 'PLAYING';
-    room.revealedAll = false;
   }
 
   return { room, allSubmitted };
@@ -295,14 +299,11 @@ export function evaluateGuess(room, guesserSocketId, guessName) {
 
 // Data Masking (Anti-Cheat)
 export function getMaskedRoomState(room, requestingSocketId) {
-  const allRevealed = room.revealedAll === true;
-
   return {
     code: room.code,
     hostId: room.hostId,
     status: room.status,
     settings: room.settings,
-    revealedAll: room.revealedAll,
     allGuessed: room.players.every(p => !p.isConnected || p.isGuessed),
     currentTurnIndex: room.currentTurnIndex,
     currentTurnPlayerId: room.players[room.currentTurnIndex]?.id || null,
@@ -310,7 +311,7 @@ export function getMaskedRoomState(room, requestingSocketId) {
       const isSelf = p.id === requestingSocketId;
       let visibleCard = null;
 
-      if (allRevealed || p.isGuessed) {
+      if (p.isGuessed) {
         visibleCard = p.assignedCard;
       } else if (!isSelf) {
         visibleCard = p.assignedCard;
