@@ -1,54 +1,33 @@
-# 🚀 Panduan Hosting Gratis 100% untuk "WhoAmI"
+# 🚀 Panduan Deploy Gratis 100% di Vercel (Tanpa Kartu Kredit)
 
-Aplikasi ini dirancang dengan arsitektur **Single Fullstack Service** (Frontend React/Vite + Backend Realtime Express/Socket.io digabung dalam satu port).  
-Artinya, kamu hanya perlu **1 layanan gratis saja** tanpa perlu hosting frontend dan backend secara terpisah!
+Game **WhoAmI** kini menggunakan arsitektur **WebRTC Peer-to-Peer (PeerJS)**.  
+Semua data permainan mengalir langsung antar browser pemain (P2P), sehingga **tidak memerlukan server backend** yang berat atau berbayar.
 
----
-
-## Opsi 1: Render.com (Paling Populer & Praktis)
-
-1. Buka [render.com](https://render.com) dan login dengan akun GitHub kamu.
-2. Klik tombol **New +** -> Pilih **Web Service**.
-3. Hubungkan ke repositori kamu: `mhmdilham/WhoAmI`.
-4. Isi konfigurasi berikut:
-   * **Name:** `whoami-game` (atau nama pilihanmu)
-   * **Language:** `Node`
-   * **Branch:** `main`
-   * **Region:** Singapore (paling cepat untuk Indonesia)
-   * **Build Command:** `npm install && npm run build`
-   * **Start Command:** `node server/index.js`
-   * **Instance Type:** `Free`
-5. Klik **Create Web Service**.
-6. Selesai! Dalam 1-2 menit kamu akan mendapatkan link HTTPS publik (contoh: `https://whoami-game.onrender.com`) yang bisa langsung dibagikan ke teman-teman di Discord!
+Aplikasi ini dapat dihosting di **Vercel 100% Gratis Selamanya** tanpa pernah meminta kartu kredit, tanpa batasan tidur (anti-sleep), dan uptime 99.99%!
 
 ---
 
-## Opsi 2: Koyeb (Alternatif Bebas Sleep)
+## ⚡ Langkah Deploy di Vercel (Cuma 1 Menit)
 
-1. Buka [koyeb.com](https://www.koyeb.com) dan login dengan GitHub.
-2. Buat App baru dari GitHub repo `mhmdilham/WhoAmI`.
-3. Build command: `npm run build`
-4. Run command: `node server/index.js`
-5. Port: `3000`
-6. Deploy secara gratis!
+1. Buka **[vercel.com](https://vercel.com)** dan klik **Sign Up** atau **Log In**.
+2. Pilih **Continue with GitHub** (login langsung pakai akun GitHub kamu).
+3. Di Dashboard Vercel, klik tombol **"Add New..."** lalu pilih **"Project"**.
+4. Cari repositori kamu: **`mhmdilham/WhoAmI`** lalu klik **"Import"**.
+5. Pada bagian konfigurasi:
+   - **Framework Preset:** Vite *(sudah otomatis terdeteksi)*
+   - **Root Directory:** `./`
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+6. Klik tombol **"Deploy"** warna biru.
+7. Tunggu sekitar 30-45 detik... **SELESAI! 🎉**
+8. Vercel akan memberikan link web publik aktif (contoh: `https://whoami-game.vercel.app`).
+   - Bagikan link tersebut ke teman-teman di Discord.
+   - Siapapun bisa langsung membuat room atau bergabung dari laptop maupun HP!
 
 ---
 
-## Opsi 3: Main Langsung di Tongkrongan (Offline / Tanpa Kuota Internet!)
-
-Jika kamu dan teman-teman sedang nongkrong di kafe/warkop yang terhubung ke WiFi atau Hotspot HP yang sama:
-
-1. Di laptopmu, jalankan:
-   ```bash
-   npm start
-   ```
-2. Cek alamat IP lokal laptopmu lewat terminal:
-   ```bash
-   ipconfig
-   # Cari bagian IPv4 Address, misal: 192.168.1.25
-   ```
-3. Beritahu teman-temanmu untuk membuka alamat ini di browser HP mereka:
-   ```
-   http://192.168.1.25:3000
-   ```
-4. Semua pemain bisa langsung bermain bersama secara instan tanpa menguras kuota internet!
+## 💡 Keunggulan Arsitektur Vercel + WebRTC
+- **100% Gratis Selamanya:** Vercel gratis tanpa verifikasi kartu kredit.
+- **Bebas Sleep (Always On):** Tidak akan pernah "tidur" setelah 5 menit seperti Glitch/Render gratisan.
+- **Ultra Low Latency:** Karena koneksi langsung P2P antar-laptop/HP pemain, delay giliran praktis 0ms.
+- **Anti-Cheat Tetap Aktif:** Browser Host bertindak sebagai koordinator room yang menyensor kartu masing-masing pemain sebelum dikirim.

@@ -32,7 +32,8 @@ export default function Home({ onJoinSuccess }) {
         sessionStorage.setItem('whoami_session', JSON.stringify({
           roomCode: response.roomCode,
           playerName: name.trim(),
-          playerToken: response.playerToken
+          playerToken: response.playerToken,
+          isHost: true
         }));
         onJoinSuccess({ roomCode: response.roomCode, playerName: name.trim() });
       } else {
