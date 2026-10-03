@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+.font-bungee {
+  font-family: 'Bungee', cursive, sans-serif;
+}
+
+/* Custom chakra pulse animations */
+@keyframes chakraPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.4), inset 0 0 15px rgba(249, 115, 22, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(249, 115, 22, 0.8), inset 0 0 25px rgba(249, 115, 22, 0.4);
+  }
+}
+
+.chakra-glow {
+  animation: chakraPulse 2.5s infinite ease-in-out;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}

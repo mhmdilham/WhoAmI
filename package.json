@@ -1,0 +1,48 @@
+{
+  "name": "whoami",
+  "version": "1.0.0",
+  "description": "Web minigame tebak karakter/identitas tersembunyi yang dimainkan secara online via voice chat (Discord / WhatsApp / Google Meet) atau saat nongkrong langsung.",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "server": "node server/index.js",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhmdilham/WhoAmI.git"
+  },
+  "keywords": [
+    "party-game",
+    "minigame",
+    "discord-game",
+    "naruto",
+    "who-am-i"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mhmdilham/WhoAmI/issues"
+  },
+  "homepage": "https://github.com/mhmdilham/WhoAmI#readme",
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "express": "^5.2.1",
+    "lucide-react": "^1.50.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "socket.io": "^4.8.4",
+    "socket.io-client": "^4.8.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2"
+  }
+}
