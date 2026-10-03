@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Play, Crown, Users, Clock, Sparkles, BookOpen, PenTool, LogOut } from 'lucide-react';
+import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut } from 'lucide-react';
 import { socket } from '../utils/socket';
 import { sfx } from '../utils/sfx';
 
@@ -21,12 +21,6 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
   const handleUpdateMode = (mode) => {
     if (!isHost) return;
     socket.emit('update_settings', { settings: { mode } });
-    sfx.playTurn();
-  };
-
-  const handleUpdateTimer = (seconds) => {
-    if (!isHost) return;
-    socket.emit('update_settings', { settings: { turnTimer: seconds } });
     sfx.playTurn();
   };
 
@@ -135,30 +129,6 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
                 Tiap pemain menuliskan 1 karakter rahasia untuk temannya. Diacak tanpa ada yang dapat kartu sendiri!
               </p>
             </button>
-          </div>
-
-          {/* Turn Timer Selector */}
-          <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs">
-            <span className="text-slate-400 flex items-center gap-1.5 font-medium">
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
-              Waktu Giliran:
-            </span>
-            <div className="flex gap-1.5">
-              {[45, 60, 90].map((sec) => (
-                <button
-                  key={sec}
-                  disabled={!isHost}
-                  onClick={() => handleUpdateTimer(sec)}
-                  className={`px-3 py-1 rounded-lg font-semibold transition-all ${
-                    room.settings.turnTimer === sec
-                      ? 'bg-orange-500 text-slate-950 font-bold'
-                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
-                  } ${isHost ? 'cursor-pointer' : 'cursor-default'}`}
-                >
-                  {sec}s
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 

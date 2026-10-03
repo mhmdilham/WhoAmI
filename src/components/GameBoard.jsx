@@ -11,7 +11,11 @@ import {
   Edit3,
   Crown,
   Sparkles,
-  Trophy
+  Trophy,
+  RotateCcw,
+  Eye,
+  EyeOff,
+  Home
 } from 'lucide-react';
 import { socket } from '../utils/socket';
 import { sfx } from '../utils/sfx';
@@ -21,7 +25,6 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
   const [isGuessModalOpen, setIsGuessModalOpen] = useState(false);
   const [notes, setNotes] = useState('');
   const [muted, setMuted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(room.settings?.turnTimer || 60);
 
   const isHost = room.hostId === myPlayerId;
   const myPlayer = room.players.find(p => p.id === myPlayerId);
@@ -34,18 +37,6 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
       setNotes(myPlayer.notes);
     }
   }, [myPlayer?.notes]);
-
-  // Turn timer countdown
-  useEffect(() => {
-    setTimeLeft(room.settings?.turnTimer || 60);
-    const interval = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) return 0;
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [room.currentTurnIndex, room.settings?.turnTimer]);
 
   const handleNotesChange = (val) => {
     setNotes(val);
@@ -71,6 +62,24 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
     socket.emit('manual_confirm_guess', { targetPlayerId, isCorrect });
   };
 
+  const handleReshuffleCards = () => {
+    if (!isHost) return;
+    socket.emit('reshuffle_cards');
+    sfx.playStart();
+  };
+
+  const handleToggleReveal = () => {
+    if (!isHost) return;
+    socket.emit('reveal_all_cards');
+    sfx.playTurn();
+  };
+
+  const handleBackToLobby = () => {
+    if (!isHost) return;
+    socket.emit('back_to_lobby');
+    sfx.playTurn();
+  };
+
   // Vote counts
   const voteList = Object.values(room.votes || {});
   const yesCount = voteList.filter(v => v === 'YES').length;
@@ -80,25 +89,55 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
   return (
     <div className="flex flex-col max-w-5xl mx-auto px-4 py-4 min-h-[95vh]">
       {/* Top Header */}
-      <div className="flex items-center justify-between bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl px-4 py-3 mb-4 shadow-lg">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl px-4 py-3 mb-4 shadow-lg">
         <div className="flex items-center gap-3">
           <div className="bg-orange-500/10 border border-orange-500/30 px-3 py-1 rounded-xl flex items-center gap-2">
             <span className="text-[11px] text-orange-400 font-semibold uppercase">ROOM</span>
             <span className="font-mono text-base font-black text-orange-400 tracking-wider">{room.code}</span>
           </div>
 
-          {/* Turn Timer */}
-          <div className={`px-3 py-1 rounded-xl flex items-center gap-1.5 text-xs font-mono font-bold border transition-colors ${
-            timeLeft <= 10
-              ? 'bg-red-500/20 border-red-500/40 text-red-400 animate-pulse'
-              : 'bg-slate-800 border-slate-700 text-slate-300'
-          }`}>
-            <span>⏱️</span>
-            <span>{String(Math.floor(timeLeft / 60)).padStart(2, '0')}:{String(timeLeft % 60).padStart(2, '0')}</span>
-          </div>
+          <span className="text-xs text-slate-400 font-medium hidden sm:inline">
+            Mode Santai Tongkrongan ☕
+          </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Host Controls & Actions */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {isHost && (
+            <div className="flex items-center gap-1.5 bg-slate-950/70 p-1 rounded-xl border border-slate-800">
+              <button
+                onClick={handleReshuffleCards}
+                className="px-2.5 py-1.5 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 text-orange-400 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Bagi kartu karakter baru langsung tanpa ke lobby"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Bagi Kartu Baru</span>
+              </button>
+
+              <button
+                onClick={handleToggleReveal}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+                  room.revealedAll
+                    ? 'bg-amber-500/25 text-amber-300'
+                    : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+                }`}
+                title={room.revealedAll ? 'Sembunyikan kartu' : 'Buka semua kartu'}
+              >
+                {room.revealedAll ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                <span className="hidden md:inline">{room.revealedAll ? 'Tutup Kartu' : 'Buka Semua'}</span>
+              </button>
+
+              <button
+                onClick={handleBackToLobby}
+                className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Kembali ke Lobby"
+              >
+                <Home className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">Lobby</span>
+              </button>
+            </div>
+          )}
+
           <button
             onClick={handleToggleMute}
             className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer"
@@ -139,8 +178,8 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
               </div>
               <p className="text-xs text-slate-300 mt-0.5">
                 {isMyTurn
-                  ? 'Nyalakan mic di Discord dan tanyakan ciri-ciri karaktermu (contoh: "Apakah aku pengguna Sharingan?")'
-                  : 'Dengarkan pertanyaannya di Voice/Discord, lalu tekan tombol respon di bawah!'}
+                  ? 'Nyalakan mic di Discord dan tanyakan pertanyaan sepuasnya (contoh: "Apakah aku ninja Konoha?")'
+                  : 'Dengarkan di Voice/Discord, lalu tekan tombol respon di samping!'}
               </p>
             </div>
           </div>
@@ -162,7 +201,7 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
                   title="Oper giliran ke pemain berikutnya"
                 >
                   <SkipForward className="w-4 h-4" />
-                  <span className="hidden sm:inline">Oper</span>
+                  <span>Oper Giliran ⏭️</span>
                 </button>
               </>
             ) : (
@@ -221,6 +260,7 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
         {room.players.map((player) => {
           const isSelf = player.id === myPlayerId;
           const isTurn = player.id === currentTurnPlayer?.id;
+          const isCardRevealed = room.revealedAll || player.isGuessed;
 
           return (
             <div
@@ -250,14 +290,14 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
 
                 {player.isGuessed && (
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold flex items-center gap-1">
-                    <Trophy className="w-3 h-3" /> Juara
+                    <Trophy className="w-3 h-3" /> Tertebak!
                   </span>
                 )}
               </div>
 
               {/* Card Body */}
               <div className="my-2 py-6 px-3 rounded-2xl bg-slate-950/70 border border-slate-800/80 text-center flex flex-col items-center justify-center min-h-[140px]">
-                {isSelf && !player.isGuessed ? (
+                {isSelf && !isCardRevealed ? (
                   /* Your Card: Secret Masked */
                   <div className="space-y-2">
                     <div className="text-3xl font-black font-bungee text-orange-400 animate-pulse tracking-widest">
@@ -268,7 +308,7 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
                     </p>
                   </div>
                 ) : (
-                  /* Friends' Card: Visible */
+                  /* Visible Card */
                   <div className="space-y-1.5">
                     <span className="inline-block px-2.5 py-0.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-semibold uppercase">
                       {player.assignedCard?.tag || 'Shinobi'}

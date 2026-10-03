@@ -23,12 +23,11 @@ export function createRoom(roomCode, hostSocketId, hostName) {
   const room = {
     code: roomCode,
     hostId: hostSocketId,
-    status: 'LOBBY', // 'LOBBY' | 'SECRET_INPUT' | 'PLAYING' | 'ROUND_OVER'
+    status: 'LOBBY', // 'LOBBY' | 'SECRET_INPUT' | 'PLAYING'
+    revealedAll: false,
     settings: {
       mode: 'preset', // 'preset' | 'custom'
-      deckId: 'naruto',
-      maxStreaks: 3,
-      turnTimer: 60
+      deckId: 'naruto'
     },
     players: [
       {
@@ -40,14 +39,11 @@ export function createRoom(roomCode, hostSocketId, hostName) {
         submittedCard: null,
         assignedCard: null,
         isGuessed: false,
-        notes: '',
-        score: 0
+        notes: ''
       }
     ],
     currentTurnIndex: 0,
-    turnStartedAt: null,
     votes: {}, // { [playerId]: 'YES' | 'NO' | 'MAYBE' }
-    winner: null,
     history: []
   };
 
@@ -58,15 +54,13 @@ export function createRoom(roomCode, hostSocketId, hostName) {
 export function joinRoom(roomCode, socketId, playerName) {
   const room = rooms.get(roomCode.toUpperCase());
   if (!room) return { error: 'Room tidak ditemukan!' };
-  if (room.status !== 'LOBBY' && room.status !== 'ROUND_OVER') {
-    // Check if player is reconnecting
-    const existingPlayer = room.players.find(p => p.name.toLowerCase() === playerName.trim().toLowerCase());
-    if (existingPlayer) {
-      existingPlayer.id = socketId;
-      existingPlayer.isConnected = true;
-      return { room };
-    }
-    return { error: 'Permainan sedang berlangsung. Tunggu ronde berikutnya ya!' };
+
+  // Check if player is reconnecting
+  const existingPlayer = room.players.find(p => p.name.toLowerCase() === playerName.trim().toLowerCase());
+  if (existingPlayer) {
+    existingPlayer.id = socketId;
+    existingPlayer.isConnected = true;
+    return { room };
   }
 
   if (room.players.length >= 12) {
@@ -91,9 +85,19 @@ export function joinRoom(roomCode, socketId, playerName) {
     submittedCard: null,
     assignedCard: null,
     isGuessed: false,
-    notes: '',
-    score: 0
+    notes: ''
   };
+
+  // If game is currently playing and mode is preset, assign a card so they can join right away
+  if (room.status === 'PLAYING' && room.settings.mode === 'preset') {
+    const deck = loadDeck(room.settings.deckId);
+    const randomCard = deck[Math.floor(Math.random() * deck.length)];
+    newPlayer.assignedCard = {
+      name: randomCard.name,
+      tag: randomCard.tag || 'Shinobi',
+      hint: randomCard.hint || ''
+    };
+  }
 
   room.players.push(newPlayer);
   return { room };
@@ -141,7 +145,6 @@ export function removePlayer(socketId) {
 
 // Derangement shuffle algorithm (no player gets their own card)
 export function derangementShuffle(submissions) {
-  // submissions: [{ authorId, cardName, hint }]
   const n = submissions.length;
   if (n <= 1) return submissions;
 
@@ -151,17 +154,13 @@ export function derangementShuffle(submissions) {
 
   while (!isValid && attempts < 200) {
     attempts++;
-    // Fisher-Yates shuffle
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-
-    // Check if any item matches its original index / author
     isValid = submissions.every((orig, idx) => orig.authorId !== shuffled[idx].authorId);
   }
 
-  // Fallback cyclic shift if random derangement didn't converge
   if (!isValid) {
     shuffled = [...submissions.slice(1), submissions[0]];
   }
@@ -169,30 +168,8 @@ export function derangementShuffle(submissions) {
   return shuffled;
 }
 
-export function startGame(room) {
-  if (room.players.length < 2) {
-    return { error: 'Minimal 2 pemain untuk memulai permainan!' };
-  }
-
-  // Reset player game states
-  room.players.forEach(p => {
-    p.isGuessed = false;
-    p.notes = '';
-    p.submittedCard = null;
-    p.assignedCard = null;
-  });
-  room.votes = {};
-  room.winner = null;
-  room.currentTurnIndex = 0;
-
-  if (room.settings.mode === 'custom') {
-    room.status = 'SECRET_INPUT';
-    return { room };
-  }
-
-  // Mode: PRESET (Naruto or other deck)
+export function dealCards(room) {
   const deck = loadDeck(room.settings.deckId);
-  // Shuffle deck
   const shuffledDeck = [...deck].sort(() => Math.random() - 0.5);
 
   room.players.forEach((player, idx) => {
@@ -202,10 +179,36 @@ export function startGame(room) {
       tag: cardData.tag || 'Shinobi',
       hint: cardData.hint || ''
     };
+    player.isGuessed = false;
+    player.notes = '';
   });
+  room.revealedAll = false;
+  room.votes = {};
+  room.currentTurnIndex = 0;
+}
 
+export function startGame(room) {
+  if (room.players.length < 2) {
+    return { error: 'Minimal 2 pemain untuk memulai permainan!' };
+  }
+
+  room.players.forEach(p => {
+    p.isGuessed = false;
+    p.notes = '';
+    p.submittedCard = null;
+    p.assignedCard = null;
+  });
+  room.votes = {};
+  room.revealedAll = false;
+  room.currentTurnIndex = 0;
+
+  if (room.settings.mode === 'custom') {
+    room.status = 'SECRET_INPUT';
+    return { room };
+  }
+
+  dealCards(room);
   room.status = 'PLAYING';
-  room.turnStartedAt = Date.now();
   return { room };
 }
 
@@ -220,12 +223,10 @@ export function submitSecretCard(room, socketId, cardName, hint = '') {
     hint: hint.trim() || 'Karakter Rahasia Tongkrongan'
   };
 
-  // Check if all connected players have submitted
   const connectedPlayers = room.players.filter(p => p.isConnected);
   const allSubmitted = connectedPlayers.every(p => p.submittedCard !== null);
 
   if (allSubmitted) {
-    // Perform derangement shuffle
     const pool = connectedPlayers.map(p => ({
       authorId: p.id,
       cardName: p.submittedCard.name,
@@ -240,41 +241,49 @@ export function submitSecretCard(room, socketId, cardName, hint = '') {
         tag: 'Karakter Custom',
         hint: shuffled[index].hint
       };
+      player.isGuessed = false;
+      player.notes = '';
     });
 
     room.status = 'PLAYING';
-    room.turnStartedAt = Date.now();
+    room.revealedAll = false;
   }
 
   return { room, allSubmitted };
 }
 
 export function nextTurn(room) {
-  const activePlayers = room.players.filter(p => p.isConnected && !p.isGuessed);
-  if (activePlayers.length <= 1) {
-    // Game is over, all or all but 1 have guessed
-    room.status = 'ROUND_OVER';
-    return room;
-  }
+  const unguessedPlayers = room.players.filter(p => p.isConnected && !p.isGuessed);
+  
+  // If everyone has guessed, rotate among all connected players
+  const targetPool = unguessedPlayers.length > 0 
+    ? unguessedPlayers 
+    : room.players.filter(p => p.isConnected);
 
-  // Find next player who hasn't guessed yet
+  if (targetPool.length === 0) return room;
+
   let nextIndex = (room.currentTurnIndex + 1) % room.players.length;
   let loops = 0;
-  while ((!room.players[nextIndex].isConnected || room.players[nextIndex].isGuessed) && loops < room.players.length) {
-    nextIndex = (nextIndex + 1) % room.players.length;
-    loops++;
+  
+  if (unguessedPlayers.length > 0) {
+    while ((!room.players[nextIndex].isConnected || room.players[nextIndex].isGuessed) && loops < room.players.length) {
+      nextIndex = (nextIndex + 1) % room.players.length;
+      loops++;
+    }
+  } else {
+    while (!room.players[nextIndex].isConnected && loops < room.players.length) {
+      nextIndex = (nextIndex + 1) % room.players.length;
+      loops++;
+    }
   }
 
   room.currentTurnIndex = nextIndex;
   room.votes = {};
-  room.turnStartedAt = Date.now();
   return room;
 }
 
 export function voteAnswer(room, voterSocketId, voteType) {
-  // voteType: 'YES' | 'NO' | 'MAYBE'
   if (room.status !== 'PLAYING') return null;
-
   room.votes[voterSocketId] = voteType;
   return room.votes;
 }
@@ -288,57 +297,41 @@ export function evaluateGuess(room, guesserSocketId, guessName) {
   const cleanGuess = guessName.trim().toLowerCase();
   const cleanTarget = player.assignedCard.name.toLowerCase();
 
-  // Smart matching: exact match or contains name (e.g. "Naruto" matches "Naruto Uzumaki")
   const isMatch = cleanTarget.includes(cleanGuess) || cleanGuess.includes(cleanTarget.split(' ')[0]);
 
   if (isMatch) {
     player.isGuessed = true;
-    player.score += 100;
-    if (!room.winner) {
-      room.winner = player.name;
-    }
-
-    // Check if game should end
-    const remainingUnguessed = room.players.filter(p => p.isConnected && !p.isGuessed);
-    if (remainingUnguessed.length <= 1) {
-      room.status = 'ROUND_OVER';
-    } else {
-      nextTurn(room);
-    }
-
-    return { correct: true, player, isGameOver: room.status === 'ROUND_OVER' };
-  } else {
-    // Wrong guess: next turn
     nextTurn(room);
-    return { correct: false, player, isGameOver: false };
+    return { correct: true, player };
+  } else {
+    nextTurn(room);
+    return { correct: false, player };
   }
 }
 
-// Data Masking (Anti-Cheat): Each player gets a tailored view of the room state
+// Data Masking (Anti-Cheat)
 export function getMaskedRoomState(room, requestingSocketId) {
-  const isRoundOver = room.status === 'ROUND_OVER';
+  const allRevealed = room.revealedAll === true;
 
   return {
     code: room.code,
     hostId: room.hostId,
     status: room.status,
     settings: room.settings,
+    revealedAll: room.revealedAll,
+    allGuessed: room.players.every(p => !p.isConnected || p.isGuessed),
     currentTurnIndex: room.currentTurnIndex,
     currentTurnPlayerId: room.players[room.currentTurnIndex]?.id || null,
     votes: room.votes,
-    winner: room.winner,
     players: room.players.map(p => {
       const isSelf = p.id === requestingSocketId;
       let visibleCard = null;
 
-      if (isRoundOver || p.isGuessed) {
-        // Revealed when round is over or when player guessed correctly
+      if (allRevealed || p.isGuessed) {
         visibleCard = p.assignedCard;
       } else if (!isSelf) {
-        // Can see everyone else's card
         visibleCard = p.assignedCard;
       } else {
-        // Cannot see your own card while playing!
         visibleCard = null;
       }
 
@@ -349,11 +342,8 @@ export function getMaskedRoomState(room, requestingSocketId) {
         isHost: p.isHost,
         isConnected: p.isConnected,
         isGuessed: p.isGuessed,
-        score: p.score,
-        // Only indicate if player has submitted in SECRET_INPUT mode, don't leak the content
         hasSubmitted: !!p.submittedCard,
         assignedCard: visibleCard,
-        // Only return notes to self
         notes: isSelf ? p.notes : undefined
       };
     })

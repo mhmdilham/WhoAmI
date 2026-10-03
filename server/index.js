@@ -13,6 +13,7 @@ import {
   removePlayer,
   startGame,
   submitSecretCard,
+  dealCards,
   nextTurn,
   voteAnswer,
   evaluateGuess,
@@ -191,15 +192,7 @@ io.on('connection', (socket) => {
 
     if (isCorrect) {
       targetPlayer.isGuessed = true;
-      targetPlayer.score += 100;
-      if (!room.winner) room.winner = targetPlayer.name;
-
-      const remaining = room.players.filter(p => p.isConnected && !p.isGuessed);
-      if (remaining.length <= 1) {
-        room.status = 'ROUND_OVER';
-      } else {
-        nextTurn(room);
-      }
+      nextTurn(room);
       io.to(currentRoomCode).emit('sfx_trigger', { type: 'WINNER', playerName: targetPlayer.name });
     } else {
       nextTurn(room);
@@ -221,14 +214,47 @@ io.on('connection', (socket) => {
     }
   });
 
-  // 11. Restart Game / Play Again
-  socket.on('restart_game', () => {
+  // 11. Host Action: Bagi Kartu Baru / Acak Ulang Langsung
+  socket.on('reshuffle_cards', () => {
+    if (!currentRoomCode) return;
+    const room = rooms.get(currentRoomCode);
+    if (!room || room.hostId !== socket.id) return;
+
+    if (room.settings.mode === 'custom') {
+      room.status = 'SECRET_INPUT';
+      room.players.forEach(p => {
+        p.submittedCard = null;
+        p.assignedCard = null;
+        p.isGuessed = false;
+        p.notes = '';
+      });
+    } else {
+      dealCards(room);
+      room.status = 'PLAYING';
+    }
+
+    broadcastRoom(room);
+    io.to(currentRoomCode).emit('sfx_trigger', { type: 'GAME_START' });
+  });
+
+  // 12. Host Action: Buka Semua Kartu
+  socket.on('reveal_all_cards', () => {
+    if (!currentRoomCode) return;
+    const room = rooms.get(currentRoomCode);
+    if (!room || room.hostId !== socket.id) return;
+
+    room.revealedAll = !room.revealedAll;
+    broadcastRoom(room);
+  });
+
+  // 13. Host Action: Kembali ke Lobby
+  socket.on('back_to_lobby', () => {
     if (!currentRoomCode) return;
     const room = rooms.get(currentRoomCode);
     if (!room || room.hostId !== socket.id) return;
 
     room.status = 'LOBBY';
-    room.winner = null;
+    room.revealedAll = false;
     room.votes = {};
     room.players.forEach(p => {
       p.isGuessed = false;
