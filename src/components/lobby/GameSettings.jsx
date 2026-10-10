@@ -2,13 +2,13 @@ import React from 'react';
 import { Sparkles, BookOpen, PenTool, Shield, Check } from 'lucide-react';
 
 const LEVEL_CONFIG = [
-  { id: 'genin', name: 'Genin (Easy)', count: 30, desc: 'Karakter Paling Populer', icon: '🟢' },
-  { id: 'chunin', name: 'Chunin (Medium)', count: 32, desc: 'Karakter Inti & Akatsuki', icon: '🟡' },
-  { id: 'jonin', name: 'Jonin (Hard)', count: 32, desc: 'Arc Besar & Jonin Konoha', icon: '🟠' },
-  { id: 'kage', name: 'Kage (Hardcore)', count: 32, desc: '7 Pendekar & Lore Mendalam', icon: '🔴' }
+  { id: 'easy', name: 'Easy (Mudah)', count: 30, desc: 'Karakter Paling Populer', icon: '🟢' },
+  { id: 'medium', name: 'Medium (Sedang)', count: 32, desc: 'Karakter Inti & Terkenal', icon: '🟡' },
+  { id: 'hard', name: 'Hard (Sulit)', count: 32, desc: 'Arc Besar & Tokoh Perang', icon: '🟠' },
+  { id: 'hardcore', name: 'Hardcore (Ekstrem)', count: 32, desc: '7 Pendekar & Lore Mendalam', icon: '🔴' }
 ];
 
-const ALL_LEVEL_IDS = ['genin', 'chunin', 'jonin', 'kage'];
+const ALL_LEVEL_IDS = ['easy', 'medium', 'hard', 'hardcore'];
 
 export default function GameSettings({
   mode,
@@ -17,12 +17,21 @@ export default function GameSettings({
   onUpdateMode,
   onUpdateDifficulty
 }) {
+  const normalizeId = (id) => {
+    if (id === 'genin') return 'easy';
+    if (id === 'chunin') return 'medium';
+    if (id === 'jonin') return 'hard';
+    if (id === 'kage') return 'hardcore';
+    return id;
+  };
+
   const getSelectedLevels = () => {
     if (Array.isArray(difficulty)) {
-      return difficulty.length > 0 ? difficulty : ALL_LEVEL_IDS;
+      const normalized = difficulty.map(normalizeId);
+      return normalized.length > 0 ? normalized : ALL_LEVEL_IDS;
     }
     if (typeof difficulty === 'string' && difficulty !== 'all') {
-      return [difficulty];
+      return [normalizeId(difficulty)];
     }
     return ALL_LEVEL_IDS;
   };
@@ -51,7 +60,7 @@ export default function GameSettings({
   const handleToggleSelectAll = () => {
     if (!isHost) return;
     if (isAllSelected) {
-      onUpdateDifficulty(['genin']);
+      onUpdateDifficulty(['easy']);
     } else {
       onUpdateDifficulty(ALL_LEVEL_IDS);
     }
@@ -60,7 +69,10 @@ export default function GameSettings({
   const getSummaryListText = () => {
     if (isAllSelected) return 'Semua Level (Acak 126 Shinobi)';
     return selectedLevels
-      .map(id => id.charAt(0).toUpperCase() + id.slice(1))
+      .map(id => {
+        const item = LEVEL_CONFIG.find(l => l.id === id);
+        return item ? item.name.split(' ')[0] : id;
+      })
       .join(', ');
   };
 

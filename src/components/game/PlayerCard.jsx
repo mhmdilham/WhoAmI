@@ -15,13 +15,13 @@ export default function PlayerCard({
   const getLevelBadge = (level) => {
     switch (level) {
       case 1:
-        return <span className="inline-block px-2 py-0.5 rounded-md border text-[10px] font-bold bg-emerald-500/15 border-emerald-500/30 text-emerald-400">🟢 Genin</span>;
+        return <span className="inline-block px-1.5 py-0.5 rounded-md border text-[9px] font-bold bg-emerald-500/15 border-emerald-500/30 text-emerald-400">🟢 Easy</span>;
       case 2:
-        return <span className="inline-block px-2 py-0.5 rounded-md border text-[10px] font-bold bg-amber-500/15 border-amber-500/30 text-amber-400">🟡 Chunin</span>;
+        return <span className="inline-block px-1.5 py-0.5 rounded-md border text-[9px] font-bold bg-amber-500/15 border-amber-500/30 text-amber-400">🟡 Medium</span>;
       case 3:
-        return <span className="inline-block px-2 py-0.5 rounded-md border text-[10px] font-bold bg-orange-500/15 border-orange-500/30 text-orange-400">🟠 Jonin</span>;
+        return <span className="inline-block px-1.5 py-0.5 rounded-md border text-[9px] font-bold bg-orange-500/15 border-orange-500/30 text-orange-400">🟠 Hard</span>;
       case 4:
-        return <span className="inline-block px-2 py-0.5 rounded-md border text-[10px] font-bold bg-purple-500/15 border-purple-500/30 text-purple-400">🔴 Kage</span>;
+        return <span className="inline-block px-1.5 py-0.5 rounded-md border text-[9px] font-bold bg-purple-500/15 border-purple-500/30 text-purple-400">🔴 Hardcore</span>;
       default:
         return null;
     }

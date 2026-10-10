@@ -30,6 +30,10 @@ export function dealCards(room) {
   const difficulty = room.settings.difficulty;
 
   const levelMap = {
+    easy: 1,
+    medium: 2,
+    hard: 3,
+    hardcore: 4,
     genin: 1,
     chunin: 2,
     jonin: 3,

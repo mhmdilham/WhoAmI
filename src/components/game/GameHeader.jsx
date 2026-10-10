@@ -21,10 +21,14 @@ export default function GameHeader({
     if (levels.length === 4) return '🌀 Semua Level';
 
     const labelMap = {
-      genin: '🟢 Genin',
-      chunin: '🟡 Chunin',
-      jonin: '🟠 Jonin',
-      kage: '🔴 Kage'
+      easy: '🟢 Easy',
+      medium: '🟡 Medium',
+      hard: '🟠 Hard',
+      hardcore: '🔴 Hardcore',
+      genin: '🟢 Easy',
+      chunin: '🟡 Medium',
+      jonin: '🟠 Hard',
+      kage: '🔴 Hardcore'
     };
 
     return levels.map(l => labelMap[l] || l).join(' + ');
