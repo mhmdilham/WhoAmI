@@ -207,6 +207,7 @@ io.on('connection', (socket) => {
         p.submittedCard = null;
         p.assignedCard = null;
         p.isGuessed = false;
+        p.finishRank = null;
         p.notes = '';
       });
     } else {
@@ -230,6 +231,7 @@ io.on('connection', (socket) => {
     room.status = 'LOBBY';
     room.players.forEach(p => {
       p.isGuessed = false;
+      p.finishRank = null;
       p.assignedCard = null;
       p.submittedCard = null;
       p.notes = '';

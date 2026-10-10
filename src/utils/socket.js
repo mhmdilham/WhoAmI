@@ -85,7 +85,27 @@ class WebRTCSocket {
     }
   }
 
-  emit(event, payload = {}, callback = null) {
+  emit(event, ...args) {
+    let payload = {};
+    let callback = null;
+
+    if (args.length === 1) {
+      if (typeof args[0] === 'function') {
+        callback = args[0];
+      } else {
+        payload = args[0] || {};
+      }
+    } else if (args.length >= 2) {
+      if (typeof args[0] === 'function') {
+        callback = args[0];
+      } else {
+        payload = args[0] || {};
+      }
+      if (typeof args[1] === 'function') {
+        callback = args[1];
+      }
+    }
+
     switch (event) {
       case 'create_room':
         this.handleCreateRoom(payload, callback);
@@ -164,7 +184,20 @@ class WebRTCSocket {
     this.isHost = true;
     this.currentRoomCode = code;
 
-    const { room, playerToken: token } = createRoom(code, peer.id, hostName, playerToken);
+    let room = rooms.get(code);
+    let token = playerToken;
+    if (!room) {
+      const created = createRoom(code, peer.id, hostName, playerToken);
+      room = created.room;
+      token = created.playerToken;
+    } else {
+      const hostPlayer = room.players.find(p => p.token === playerToken || p.isHost);
+      if (hostPlayer) {
+        hostPlayer.id = peer.id;
+        hostPlayer.isConnected = true;
+      }
+      room.hostId = peer.id;
+    }
 
     peer.on('connection', (conn) => {
       conn.on('open', () => {
@@ -564,6 +597,7 @@ class WebRTCSocket {
         p.submittedCard = null;
         p.assignedCard = null;
         p.isGuessed = false;
+        p.finishRank = null;
         p.notes = '';
       });
     } else {
@@ -584,6 +618,7 @@ class WebRTCSocket {
     room.status = 'LOBBY';
     room.players.forEach(p => {
       p.isGuessed = false;
+      p.finishRank = null;
       p.assignedCard = null;
       p.submittedCard = null;
       p.notes = '';

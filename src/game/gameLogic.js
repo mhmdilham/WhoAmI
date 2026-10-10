@@ -24,7 +24,7 @@ export function createRoom(roomCode, hostSocketId, hostName, playerToken = null)
   const room = {
     code: roomCode,
     hostId: hostSocketId,
-    status: 'LOBBY', // 'LOBBY' | 'SECRET_INPUT' | 'PLAYING'
+    status: 'LOBBY', // 'LOBBY' | 'SECRET_INPUT' | 'PLAYING' | 'GAME_OVER'
     settings: {
       mode: 'preset', // 'preset' | 'custom'
       deckId: 'naruto'
@@ -40,6 +40,7 @@ export function createRoom(roomCode, hostSocketId, hostName, playerToken = null)
         submittedCard: null,
         assignedCard: null,
         isGuessed: false,
+        finishRank: null,
         notes: ''
       }
     ],
@@ -96,6 +97,7 @@ export function joinRoom(roomCode, socketId, playerName, playerToken = null) {
     submittedCard: null,
     assignedCard: null,
     isGuessed: false,
+    finishRank: null,
     notes: ''
   };
 
@@ -182,9 +184,11 @@ export function dealCards(room) {
       hint: cardData.hint || ''
     };
     player.isGuessed = false;
+    player.finishRank = null;
     player.notes = '';
   });
   room.currentTurnIndex = 0;
+  room.status = 'PLAYING';
 }
 
 export function startGame(room) {
@@ -194,6 +198,7 @@ export function startGame(room) {
 
   room.players.forEach(p => {
     p.isGuessed = false;
+    p.finishRank = null;
     p.notes = '';
     p.submittedCard = null;
     p.assignedCard = null;
@@ -240,37 +245,33 @@ export function submitSecretCard(room, socketId, cardName, hint = '') {
         hint: shuffled[index].hint
       };
       player.isGuessed = false;
+      player.finishRank = null;
       player.notes = '';
     });
 
     room.status = 'PLAYING';
+    room.currentTurnIndex = 0;
   }
 
   return { room, allSubmitted };
 }
 
 export function nextTurn(room) {
-  const unguessedPlayers = room.players.filter(p => p.isConnected && !p.isGuessed);
-  
-  const targetPool = unguessedPlayers.length > 0 
-    ? unguessedPlayers 
-    : room.players.filter(p => p.isConnected);
+  const connectedPlayers = room.players.filter(p => p.isConnected);
+  const unguessedPlayers = connectedPlayers.filter(p => !p.isGuessed);
 
-  if (targetPool.length === 0) return room;
+  if (unguessedPlayers.length === 0) {
+    room.status = 'GAME_OVER';
+    return room;
+  }
 
   let nextIndex = (room.currentTurnIndex + 1) % room.players.length;
   let loops = 0;
   
-  if (unguessedPlayers.length > 0) {
-    while ((!room.players[nextIndex].isConnected || room.players[nextIndex].isGuessed) && loops < room.players.length) {
-      nextIndex = (nextIndex + 1) % room.players.length;
-      loops++;
-    }
-  } else {
-    while (!room.players[nextIndex].isConnected && loops < room.players.length) {
-      nextIndex = (nextIndex + 1) % room.players.length;
-      loops++;
-    }
+  // Advance turn to the next player who has NOT yet guessed their card
+  while ((!room.players[nextIndex].isConnected || room.players[nextIndex].isGuessed) && loops < room.players.length * 2) {
+    nextIndex = (nextIndex + 1) % room.players.length;
+    loops++;
   }
 
   room.currentTurnIndex = nextIndex;
@@ -290,29 +291,48 @@ export function evaluateGuess(room, guesserSocketId, guessName) {
 
   if (isMatch) {
     player.isGuessed = true;
+    
+    // Assign finishRank
+    const alreadyRanked = room.players.filter(p => p.finishRank);
+    player.finishRank = alreadyRanked.length + 1;
+
+    // Check if ALL active connected players are now guessed
+    const connectedPlayers = room.players.filter(p => p.isConnected);
+    const allFinished = connectedPlayers.length > 0 && connectedPlayers.every(p => p.isGuessed);
+
+    if (allFinished) {
+      room.status = 'GAME_OVER';
+      return { correct: true, player, allFinished: true };
+    }
+
     nextTurn(room);
-    return { correct: true, player };
+    return { correct: true, player, allFinished: false };
   } else {
     nextTurn(room);
-    return { correct: false, player };
+    return { correct: false, player, allFinished: false };
   }
 }
 
 // Data Masking (Anti-Cheat)
 export function getMaskedRoomState(room, requestingSocketId) {
+  const connectedPlayers = room.players.filter(p => p.isConnected);
+  const allGuessed = connectedPlayers.length > 0 && connectedPlayers.every(p => p.isGuessed);
+  const isGameOver = room.status === 'GAME_OVER' || allGuessed;
+
   return {
     code: room.code,
     hostId: room.hostId,
-    status: room.status,
+    status: isGameOver ? 'GAME_OVER' : room.status,
     settings: room.settings,
-    allGuessed: room.players.every(p => !p.isConnected || p.isGuessed),
+    allGuessed: allGuessed,
     currentTurnIndex: room.currentTurnIndex,
     currentTurnPlayerId: room.players[room.currentTurnIndex]?.id || null,
     players: room.players.map(p => {
       const isSelf = p.id === requestingSocketId;
       let visibleCard = null;
 
-      if (p.isGuessed) {
+      // Reveal all cards once game is over, or when player has successfully guessed
+      if (isGameOver || p.isGuessed) {
         visibleCard = p.assignedCard;
       } else if (!isSelf) {
         visibleCard = p.assignedCard;
@@ -327,6 +347,7 @@ export function getMaskedRoomState(room, requestingSocketId) {
         isHost: p.isHost,
         isConnected: p.isConnected,
         isGuessed: p.isGuessed,
+        finishRank: p.finishRank || null,
         hasSubmitted: !!p.submittedCard,
         assignedCard: visibleCard,
         notes: isSelf ? p.notes : undefined

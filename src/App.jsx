@@ -96,7 +96,7 @@ export default function App() {
           />
         )}
 
-        {room && (room.status === 'PLAYING' || room.status === 'ROUND_OVER') && (
+        {room && (room.status === 'PLAYING' || room.status === 'ROUND_OVER' || room.status === 'GAME_OVER') && (
           <GameBoard
             room={room}
             myPlayerId={myPlayerId}
