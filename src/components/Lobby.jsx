@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut, Link2, UserX } from 'lucide-react';
+import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut, Link2, UserX, Shield } from 'lucide-react';
 import { socket } from '../utils/socket';
 import { copyToClipboard } from '../utils/clipboard';
+
+const DIFFICULTY_OPTIONS = [
+  { id: 'genin', name: 'Genin (Easy)', desc: '30 Karakter Paling Populer', icon: '🟢' },
+  { id: 'chunin', name: 'Chunin (Medium)', desc: '32 Karakter Inti & Akatsuki', icon: '🟡' },
+  { id: 'jonin', name: 'Jonin (Hard)', desc: '32 Karakter Arc Besar & Kage', icon: '🟠' },
+  { id: 'kage', name: 'Kage (Hardcore)', desc: '32 Pendekar & Lore Mendalam', icon: '🔴' },
+  { id: 'all', name: 'Semua Level (Random)', desc: 'Acak dari 126 Karakter', icon: '🌀' }
+];
 
 export default function Lobby({ room, myPlayerId, onLeave }) {
   const [copiedCode, setCopiedCode] = useState(false);
@@ -36,6 +44,11 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
   const handleUpdateMode = (mode) => {
     if (!isHost) return;
     socket.emit('update_settings', { settings: { mode } });
+  };
+
+  const handleUpdateDifficulty = (difficulty) => {
+    if (!isHost) return;
+    socket.emit('update_settings', { settings: { difficulty } });
   };
 
   const handleStartGame = () => {
@@ -128,7 +141,7 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
                 )}
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                55+ kartu karakter ninja dari Konoha, Akatsuki, hingga Sannin diacak otomatis oleh sistem.
+                126 karakter canon lengkap dengan 4 level kesulitan atau acak semua level.
               </p>
             </button>
 
@@ -157,6 +170,54 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
               </p>
             </button>
           </div>
+
+          {/* Difficulty Level Selector (When in Preset Mode) */}
+          {room.settings.mode === 'preset' && (
+            <div className="mt-4 pt-4 border-t border-slate-800/80">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-orange-400" />
+                  Tingkat Kesulitan Karakter:
+                </span>
+                <span className="text-[11px] text-orange-400 font-semibold bg-orange-500/10 px-2 py-0.5 rounded-md">
+                  {room.settings.difficulty === 'genin' ? '🟢 Genin (Easy)' :
+                   room.settings.difficulty === 'chunin' ? '🟡 Chunin (Medium)' :
+                   room.settings.difficulty === 'jonin' ? '🟠 Jonin (Hard)' :
+                   room.settings.difficulty === 'kage' ? '🔴 Kage (Hardcore)' : '🌀 Semua Level (Random)'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {DIFFICULTY_OPTIONS.map((opt) => {
+                  const isSelected = (room.settings.difficulty || 'all') === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      disabled={!isHost}
+                      onClick={() => handleUpdateDifficulty(opt.id)}
+                      className={`p-2.5 rounded-xl border text-left transition-all ${
+                        isSelected
+                          ? 'bg-orange-500/15 border-orange-500/60 text-white shadow-md shadow-orange-500/10'
+                          : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700'
+                      } ${isHost ? 'cursor-pointer active:scale-[0.98]' : 'cursor-default'} ${
+                        opt.id === 'all' ? 'col-span-2 sm:col-span-1' : ''
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-0.5">
+                        <span className="text-xs font-bold flex items-center gap-1.5 text-slate-200">
+                          <span>{opt.icon}</span>
+                          <span className="truncate">{opt.name}</span>
+                        </span>
+                        {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse shrink-0"></span>}
+                      </div>
+                      <p className="text-[10px] text-slate-400 truncate">{opt.desc}</p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Players List Card */}

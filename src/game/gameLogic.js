@@ -27,7 +27,8 @@ export function createRoom(roomCode, hostSocketId, hostName, playerToken = null)
     status: 'LOBBY', // 'LOBBY' | 'SECRET_INPUT' | 'PLAYING' | 'GAME_OVER'
     settings: {
       mode: 'preset', // 'preset' | 'custom'
-      deckId: 'naruto'
+      deckId: 'naruto',
+      difficulty: 'all' // 'all' | 'genin' | 'chunin' | 'jonin' | 'kage'
     },
     players: [
       {
@@ -169,8 +170,31 @@ export function derangementShuffle(submissions) {
 }
 
 export function dealCards(room) {
-  const deck = loadDeck(room.settings.deckId);
-  const shuffledDeck = [...deck];
+  const fullDeck = loadDeck(room.settings.deckId);
+  const difficulty = room.settings.difficulty || 'all';
+
+  let filteredDeck = fullDeck;
+  if (difficulty && difficulty !== 'all') {
+    const levelMap = {
+      genin: 1,
+      chunin: 2,
+      jonin: 3,
+      kage: 4,
+      1: 1,
+      2: 2,
+      3: 3,
+      4: 4
+    };
+    const targetLevel = levelMap[difficulty];
+    if (targetLevel) {
+      const matched = fullDeck.filter(card => card.level === targetLevel);
+      if (matched.length >= room.players.length) {
+        filteredDeck = matched;
+      }
+    }
+  }
+
+  const shuffledDeck = [...filteredDeck];
   for (let i = shuffledDeck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
@@ -181,7 +205,8 @@ export function dealCards(room) {
     player.assignedCard = {
       name: cardData.name,
       tag: cardData.tag || 'Shinobi',
-      hint: cardData.hint || ''
+      hint: cardData.hint || '',
+      level: cardData.level || 1
     };
     player.isGuessed = false;
     player.finishRank = null;

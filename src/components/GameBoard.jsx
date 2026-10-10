@@ -128,6 +128,15 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
               <Copy className="w-3.5 h-3.5 text-orange-400/70 group-hover:text-orange-400" />
             )}
           </button>
+
+          {room.settings?.mode === 'preset' && (
+            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-950/70 border border-slate-800 text-[11px] font-bold text-slate-300">
+              {room.settings.difficulty === 'genin' ? '🟢 Genin' :
+               room.settings.difficulty === 'chunin' ? '🟡 Chunin' :
+               room.settings.difficulty === 'jonin' ? '🟠 Jonin' :
+               room.settings.difficulty === 'kage' ? '🔴 Kage' : '🌀 Semua Level'}
+            </span>
+          )}
         </div>
 
         {/* Host Controls & Leave */}
@@ -418,9 +427,23 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
                 ) : (
                   /* Visible Card */
                   <div className="space-y-1">
-                    <span className="inline-block px-2 py-0.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-semibold uppercase">
-                      {player.assignedCard?.tag || 'Shinobi'}
-                    </span>
+                    <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                      <span className="inline-block px-2 py-0.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-semibold uppercase">
+                        {player.assignedCard?.tag || 'Shinobi'}
+                      </span>
+                      {player.assignedCard?.level && (
+                        <span className={`inline-block px-2 py-0.5 rounded-md border text-[10px] font-bold ${
+                          player.assignedCard.level === 1 ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' :
+                          player.assignedCard.level === 2 ? 'bg-amber-500/15 border-amber-500/30 text-amber-400' :
+                          player.assignedCard.level === 3 ? 'bg-orange-500/15 border-orange-500/30 text-orange-400' :
+                          'bg-purple-500/15 border-purple-500/30 text-purple-400'
+                        }`}>
+                          {player.assignedCard.level === 1 ? '🟢 Genin' :
+                           player.assignedCard.level === 2 ? '🟡 Chunin' :
+                           player.assignedCard.level === 3 ? '🟠 Jonin' : '🔴 Kage'}
+                        </span>
+                      )}
+                    </div>
                     <h4 className="text-base font-extrabold text-white leading-tight">
                       {player.assignedCard?.name || 'Karakter Rahasia'}
                     </h4>
