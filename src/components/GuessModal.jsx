@@ -25,12 +25,15 @@ export default function GuessModal({ isOpen, onClose }) {
             setGuess('');
           }, 1500);
         } else {
-          setFeedback({ type: 'error', msg: 'SALAH! 😢 Identitasmu bukan itu. Giliranmu berakhir!' });
+          const errMsg = res.isClanOnly
+            ? 'Nama klan saja tidak cukup! Harus sebutkan nama karakter (contoh: Hinata atau Hinata Hyuga).'
+            : 'SALAH! 😢 Identitasmu bukan itu. Giliranmu berakhir!';
+          setFeedback({ type: 'error', msg: errMsg });
           setTimeout(() => {
             onClose();
             setFeedback(null);
             setGuess('');
-          }, 1500);
+          }, 2200);
         }
       }
     });

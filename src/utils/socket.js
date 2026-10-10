@@ -286,7 +286,7 @@ class WebRTCSocket {
           replyCallback({ success: false, error: result.error });
           return;
         }
-        replyCallback({ success: true, correct: result.correct });
+        replyCallback({ success: true, correct: result.correct, isClanOnly: result.isClanOnly });
         this.broadcastRoom(room);
         break;
       }
@@ -559,7 +559,7 @@ class WebRTCSocket {
         if (callback) callback({ success: false, error: result.error });
         return;
       }
-      if (callback) callback({ success: true, correct: result.correct });
+      if (callback) callback({ success: true, correct: result.correct, isClanOnly: result.isClanOnly });
       this.broadcastRoom(room);
     } else {
       this.sendToHost('guess_identity', { guessName }, callback);

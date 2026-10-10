@@ -154,7 +154,7 @@ io.on('connection', (socket) => {
       return;
     }
 
-    if (callback) callback({ success: true, correct: result.correct });
+    if (callback) callback({ success: true, correct: result.correct, isClanOnly: result.isClanOnly });
     broadcastRoom(room);
   });
 

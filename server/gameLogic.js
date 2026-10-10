@@ -278,16 +278,98 @@ export function nextTurn(room) {
   return room;
 }
 
+export const DISALLOWED_CLAN_STANDALONES = new Set([
+  'hyuga', 'hyuuga', 'uchiha', 'uzumaki', 'sarutobi', 'senju',
+  'haruno', 'hatake', 'nara', 'yamanaka', 'akimichi', 'inuzuka',
+  'aburame', 'namikaze', 'hoshigaki', 'momochi', 'yakushi',
+  'otsutsuki', 'ootsutsuki', 'shimura', 'umino', 'hozuki', 'houzuki', 'terumi'
+]);
+
+export function cleanText(str) {
+  return (str || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+export function normalizeVariants(str) {
+  return str
+    .replace(/hyuuga/g, 'hyuga')
+    .replace(/ootsutsuki/g, 'otsutsuki')
+    .replace(/houzuki/g, 'hozuki');
+}
+
+export function getValidAnswers(cardName) {
+  const answers = new Set();
+  const cleanFull = cleanText(cardName);
+  if (cleanFull) {
+    answers.add(cleanFull);
+    answers.add(normalizeVariants(cleanFull));
+  }
+
+  const chunks = cardName.split(/[/&()]/).map(c => c.trim()).filter(Boolean);
+
+  for (const chunk of chunks) {
+    const cleanChunk = cleanText(chunk);
+    if (!cleanChunk) continue;
+    answers.add(cleanChunk);
+    answers.add(normalizeVariants(cleanChunk));
+    answers.add(cleanChunk.replace(/\s+/g, ''));
+
+    const words = cleanChunk.split(' ');
+    if (words.length > 1) {
+      const firstName = words[0];
+      if (firstName.length >= 2) {
+        answers.add(firstName);
+      }
+      if (cleanChunk === 'rock lee') answers.add('lee');
+      if (cleanChunk === 'might guy') answers.add('guy');
+      if (cleanChunk === 'killer bee') answers.add('bee');
+    }
+  }
+
+  for (const clan of DISALLOWED_CLAN_STANDALONES) {
+    answers.delete(clan);
+  }
+
+  return Array.from(answers);
+}
+
+export function checkGuessMatch(cardName, rawGuess) {
+  const cleanGuess = cleanText(rawGuess);
+  if (!cleanGuess) return { isMatch: false, isClanOnly: false };
+
+  const normGuess = normalizeVariants(cleanGuess);
+  const noSpaceGuess = cleanGuess.replace(/\s+/g, '');
+
+  if (
+    DISALLOWED_CLAN_STANDALONES.has(cleanGuess) ||
+    DISALLOWED_CLAN_STANDALONES.has(normGuess) ||
+    DISALLOWED_CLAN_STANDALONES.has(noSpaceGuess)
+  ) {
+    return { isMatch: false, isClanOnly: true };
+  }
+
+  const validAnswers = getValidAnswers(cardName);
+  for (const ans of validAnswers) {
+    if (cleanGuess === ans || normGuess === ans || noSpaceGuess === ans.replace(/\s+/g, '')) {
+      return { isMatch: true, isClanOnly: false };
+    }
+  }
+
+  return { isMatch: false, isClanOnly: false };
+}
+
 export function evaluateGuess(room, guesserSocketId, guessName) {
   if (room.status !== 'PLAYING') return { error: 'Permainan tidak aktif!' };
 
   const player = room.players.find(p => p.id === guesserSocketId);
   if (!player || !player.assignedCard) return { error: 'Pemain atau kartu tidak ditemukan!' };
 
-  const cleanGuess = guessName.trim().toLowerCase();
-  const cleanTarget = player.assignedCard.name.toLowerCase();
-
-  const isMatch = cleanTarget.includes(cleanGuess) || cleanGuess.includes(cleanTarget.split(' ')[0]);
+  const { isMatch, isClanOnly } = checkGuessMatch(player.assignedCard.name, guessName);
 
   if (isMatch) {
     player.isGuessed = true;
@@ -309,7 +391,7 @@ export function evaluateGuess(room, guesserSocketId, guessName) {
     return { correct: true, player, allFinished: false };
   } else {
     nextTurn(room);
-    return { correct: false, player, allFinished: false };
+    return { correct: false, player, isClanOnly, allFinished: false };
   }
 }
 
