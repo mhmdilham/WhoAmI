@@ -91,15 +91,34 @@ export default function PlayerCard({
       </div>
 
       {/* Card Body ("Layar Jidat Digital") */}
-      <div className="my-2 py-6 px-3 rounded-2xl bg-slate-950/70 border border-slate-800/80 text-center flex flex-col items-center justify-center min-h-[130px]">
+      <div className="my-2 py-4 px-3 rounded-2xl bg-slate-950/70 border border-slate-800/80 text-center flex flex-col items-center justify-center min-h-[175px]">
         {isSelf && !isCardRevealed ? (
           /* Your Card: Secret Masked */
-          <div className="text-4xl font-black font-bungee text-orange-400 animate-pulse tracking-widest">
-            ???
+          <div className="flex flex-col items-center justify-center py-2">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-slate-900/80 border border-dashed border-orange-500/30 flex items-center justify-center mb-2.5 shadow-inner">
+              <span className="text-3xl font-black font-bungee text-orange-400/80 animate-pulse">?</span>
+            </div>
+            <div className="text-3xl font-black font-bungee text-orange-400 animate-pulse tracking-widest">
+              ???
+            </div>
+            <span className="text-[10px] text-slate-500 font-medium mt-1">Kartumu di jidat (hanya lawan yang tahu)</span>
           </div>
         ) : (
           /* Visible Card */
-          <div className="space-y-1">
+          <div className="flex flex-col items-center space-y-1.5 w-full">
+            {player.assignedCard?.image && (
+              <div className="relative mb-1">
+                <img
+                  src={player.assignedCard.image}
+                  alt={player.assignedCard.name || 'Shinobi'}
+                  loading="lazy"
+                  className="w-16 h-16 sm:w-20 sm:h-20 object-contain rounded-2xl bg-slate-900/90 border border-slate-700/80 p-1 shadow-md shadow-black/40 transition-transform duration-200 hover:scale-105"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
             <div className="flex items-center justify-center gap-1.5 flex-wrap">
               <span className="inline-block px-2 py-0.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-semibold uppercase">
                 {player.assignedCard?.tag || 'Shinobi'}
@@ -110,7 +129,7 @@ export default function PlayerCard({
               {player.assignedCard?.name || 'Karakter Rahasia'}
             </h4>
             {player.assignedCard?.hint && (
-              <p className="text-[11px] text-slate-400 italic">
+              <p className="text-[11px] text-slate-400 italic px-2">
                 "{player.assignedCard.hint}"
               </p>
             )}

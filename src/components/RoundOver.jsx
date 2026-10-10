@@ -61,7 +61,15 @@ export default function RoundOver({ room, myPlayerId }) {
               </span>
             </div>
 
-            <div className="py-2.5 px-3 rounded-xl bg-slate-950/80 border border-slate-800">
+            <div className="py-2.5 px-3 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col items-center">
+              {player.assignedCard?.image && (
+                <img
+                  src={player.assignedCard.image}
+                  alt={player.assignedCard.name || 'Shinobi'}
+                  className="w-14 h-14 object-contain rounded-xl bg-slate-900 border border-slate-800 p-0.5 mb-1.5 shadow-md"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              )}
               <span className="text-[10px] text-orange-400 font-semibold uppercase block mb-0.5">
                 {player.assignedCard?.tag || 'Karakter'}
               </span>

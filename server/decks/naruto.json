@@ -1,131 +1,884 @@
 [
-  { "name": "Naruto Uzumaki", "tag": "Hokage / Tim 7", "hint": "Jinchuriki Ekor Sembilan, suka ramen", "level": 1 },
-  { "name": "Sasuke Uchiha", "tag": "Uchiha / Tim 7", "hint": "Pengguna Sharingan & Rinnegan, Chidori", "level": 1 },
-  { "name": "Sakura Haruno", "tag": "Ninja Medis / Tim 7", "hint": "Murid Tsunade, pukulan super kuat", "level": 1 },
-  { "name": "Kakashi Hatake", "tag": "Hokage ke-6 / Jounin", "hint": "Copy Ninja, suka baca Icha Icha Paradise", "level": 1 },
-  { "name": "Jiraiya (Ero-Sennin)", "tag": "Legenda Sannin", "hint": "Petapa Katak, penulis buku dewasa", "level": 1 },
-  { "name": "Tsunade", "tag": "Hokage ke-5 / Sannin", "hint": "Cucu Hashirama, ahli medis & suka judi", "level": 1 },
-  { "name": "Orochimaru", "tag": "Legenda Sannin", "hint": "Obsesi keabadian & jurus terlarang ular", "level": 1 },
-  { "name": "Itachi Uchiha", "tag": "Akatsuki / Uchiha", "hint": "Kakak Sasuke, ahli Genjutsu Tsukuyomi", "level": 1 },
-  { "name": "Minato Namikaze", "tag": "Hokage ke-4", "hint": "Kilat Kuning Konoha, ayah Naruto", "level": 1 },
-  { "name": "Madara Uchiha", "tag": "Legenda Uchiha", "hint": "Pemicu Perang Dunia Shinobi ke-4, Susano'o sempurna", "level": 1 },
-  { "name": "Obito Uchiha (Tobi)", "tag": "Akatsuki / Uchiha", "hint": "Pengguna Kamui, topeng spiral oranye", "level": 1 },
-  { "name": "Pain / Nagato", "tag": "Pemimpin Akatsuki", "hint": "Pengguna Rinnegan, Shinra Tensei", "level": 1 },
-  { "name": "Shikamaru Nara", "tag": "Tim 10 / Penasihat", "hint": "Jenius IQ 200, pemalas, jurus bayangan", "level": 1 },
-  { "name": "Rock Lee", "tag": "Tim Guy", "hint": "Hanya bisa Taijutsu, alis tebal, baju ketat hijau", "level": 1 },
-  { "name": "Might Guy", "tag": "Jounin Konoha", "hint": "Binatang Buas Hijau Konoha, Gerbang ke-8 Hachimon", "level": 1 },
-  { "name": "Gaara", "tag": "Kazekage ke-5", "hint": "Pengendali pasir, mantan jinchuriki Shukaku", "level": 1 },
-  { "name": "Hinata Hyuga", "tag": "Klan Hyuga / Tim 8", "hint": "Pemilik Byakugan, pemalu, istri Naruto", "level": 1 },
-  { "name": "Neji Hyuga", "tag": "Klan Hyuga / Tim Guy", "hint": "Jenius Hyuga, Juuken & Kaiten", "level": 1 },
-  { "name": "Killer Bee", "tag": "Kumo / Jinchuriki", "hint": "Jinchuriki Hachibi (Ekor 8), suka ngerap", "level": 1 },
-  { "name": "Kurama (Kyubi)", "tag": "Bijuu Ekor 9", "hint": "Rubah oranye berekor sembilan", "level": 1 },
-  { "name": "Hashirama Senju", "tag": "Hokage Pertama", "hint": "Dewa Shinobi, pengguna elemen kayu Mokuton", "level": 1 },
-  { "name": "Tobirama Senju", "tag": "Hokage ke-2", "hint": "Pencipta Hiraishin, Kage Bunshin, dan Edo Tensei", "level": 1 },
-  { "name": "Hiruzen Sarutobi", "tag": "Hokage ke-3", "hint": "Profesor Shinobi, kakek Konohamaru, summon Enma", "level": 1 },
-  { "name": "Deidara", "tag": "Akatsuki / Iwa", "hint": "Seni adalah ledakan! Mulut di telapak tangan", "level": 1 },
-  { "name": "Sasori", "tag": "Akatsuki / Suna", "hint": "Master boneka manusia dari Sunagakure", "level": 1 },
-  { "name": "Hidan", "tag": "Akatsuki", "hint": "Penganut ajaran Jashin, tubuh abadi berdarah", "level": 1 },
-  { "name": "Kakuzu", "tag": "Akatsuki", "hint": "Punya 5 jantung, mata duitan", "level": 1 },
-  { "name": "Konan", "tag": "Akatsuki", "hint": "Malaikat kertas pelindung Nagato", "level": 1 },
-  { "name": "Zabuza Momochi", "tag": "7 Pendekar Pedang Kiri", "hint": "Iblis dari Kirigakure, pedang Kubikiribocho", "level": 1 },
-  { "name": "Haku", "tag": "Kekkei Genkai Kiri", "hint": "Pengendali es cermin kristal, setia ke Zabuza", "level": 1 },
-
-  { "name": "Kiba Inuzuka & Akamaru", "tag": "Tim 8", "hint": "Ninja pengendali anjing, jurus Gatsuga", "level": 2 },
-  { "name": "Shino Aburame", "tag": "Tim 8", "hint": "Ninja serangga pendiam berkacamata hitam", "level": 2 },
-  { "name": "Ino Yamanaka", "tag": "Tim 10", "hint": "Jurus transfer pikiran Shintenshin no Jutsu", "level": 2 },
-  { "name": "Choji Akimichi", "tag": "Tim 10", "hint": "Suka makan keripik, jurus pembesar tubuh Baika no Jutsu", "level": 2 },
-  { "name": "Asuma Sarutobi", "tag": "Guru Tim 10", "hint": "Suka merokok, senjata belati chakra angin", "level": 2 },
-  { "name": "Tenten", "tag": "Tim Guy", "hint": "Spesialis ratusan senjata dari gulungan ninja", "level": 2 },
-  { "name": "Temari", "tag": "Suna / Tim Gaara", "hint": "Kipas raksasa angin, kakak Gaara, istri Shikamaru", "level": 2 },
-  { "name": "Kankuro", "tag": "Suna / Tim Gaara", "hint": "Pengendali boneka Karasu & Kuroari, cat wajah ungu", "level": 2 },
-  { "name": "Sai", "tag": "ANBU Root / Tim 7", "hint": "Menggambar binatang hidup dengan tinta, senyum palsu", "level": 2 },
-  { "name": "Yamato (Tenzo)", "tag": "Jounin Konoha", "hint": "Eksperimen Orochimaru, pengguna Mokuton kayu", "level": 2 },
-  { "name": "Iruka Umino", "tag": "Guru Akademi", "hint": "Orang pertama yang mengakui Naruto, bekas luka di hidung", "level": 2 },
-  { "name": "Konohamaru Sarutobi", "tag": "Murid Naruto", "hint": "Cucu Hokage ke-3, belajar Rasengan dari Naruto", "level": 2 },
-  { "name": "Kushina Uzumaki", "tag": "Ibu Naruto", "hint": "Habanero Berdarah Merah, mantan jinchuriki Kyubi", "level": 2 },
-  { "name": "Kisame Hoshigaki", "tag": "Akatsuki / Kiri", "hint": "Monster Kabut, pengguna pedang Samehada", "level": 2 },
-  { "name": "Kabuto Yakushi", "tag": "Anak Buah Orochimaru", "hint": "Mata-mata berkacamata, pengguna Sage Ular", "level": 2 },
-  { "name": "Danzo Shimura", "tag": "Pemimpin ANBU Root", "hint": "Tangan penuh Sharingan dan sel Hashirama", "level": 2 },
-  { "name": "Suigetsu Hozuki", "tag": "Tim Taka", "hint": "Tubuh bisa berubah jadi air, pedang Zabuza", "level": 2 },
-  { "name": "Karin Uzumaki", "tag": "Tim Taka", "hint": "Bisa menyembuhkan orang lewat gigitan, bucin Sasuke", "level": 2 },
-  { "name": "Jugo", "tag": "Tim Taka", "hint": "Penyayang binatang tapi bisa hilang kendali mengamuk", "level": 2 },
-  { "name": "Kimimaro", "tag": "5 Ninja Bunyi", "hint": "Kekkei Genkai pengendali tulang Kaguya", "level": 2 },
-  { "name": "Mei Terumi", "tag": "Mizukage ke-5", "hint": "Elemen lava (Yoton) dan kabut asam uap (Futton)", "level": 2 },
-  { "name": "Ohnoki", "tag": "Tsuchikage ke-3", "hint": "Kakek tua dengan jurus debu partikel Jinton", "level": 2 },
-  { "name": "A / Ay (Raikage ke-4)", "tag": "Raikage ke-4", "hint": "Baju zirah petir, saudara angkat Killer Bee", "level": 2 },
-  { "name": "Kaguya Otsutsuki", "tag": "Leluhur Chakra", "hint": "Ibu dari Hagoromo, kelinci bulan bertanduk", "level": 2 },
-  { "name": "Shisui Uchiha", "tag": "Uchiha / Konoha", "hint": "Pemilik Kotoamatsukami, Shunshin no Shisui, sahabat Itachi", "level": 2 },
-  { "name": "Kurenai Yuhi", "tag": "Guru Tim 8", "hint": "Istri Asuma, ahli Genjutsu ilusi pohon Konoha", "level": 2 },
-  { "name": "Anko Mitarashi", "tag": "Penguji Chunin", "hint": "Mantan murid Orochimaru, penggemar dango manis", "level": 2 },
-  { "name": "Shizune", "tag": "Ninja Medis", "hint": "Murid dan asisten setia Tsunade, pemilik babi Tonton", "level": 2 },
-  { "name": "Chiyo (Nenek Chiyo)", "tag": "Tetua Sunagakure", "hint": "Nenek Sasori, master pengendali 10 boneka putih Shirohigari", "level": 2 },
-  { "name": "Shukaku (Ichibi)", "tag": "Bijuu Ekor 1", "hint": "Monster tanuki rakun berpasir yang bermusuhan dengan Kurama", "level": 2 },
-  { "name": "Gyuki (Hachibi)", "tag": "Bijuu Ekor 8", "hint": "Monster banteng berkepala gurita bertanduk rekan setia Killer Bee", "level": 2 },
-  { "name": "Zetsu Hitam & Putih", "tag": "Akatsuki", "hint": "Kuro-Zetsu kehendak Kaguya dan Shiro-Zetsu klon Hashirama tumbuhan venus", "level": 2 },
-
-  { "name": "Darui", "tag": "Tangan Kanan Raikage", "hint": "Pengguna Raiton Petir Hitam dan elemen Ranton badai laser", "level": 3 },
-  { "name": "Chojuro", "tag": "Pengawal Mizukage", "hint": "Pengguna pedang kembar Hiramekarei yang pemalu berkacamata", "level": 3 },
-  { "name": "Kurotsuchi", "tag": "Pengawal Tsuchikage", "hint": "Cucu Ohnoki, kunoichi lincah pengguna Yoton semen kapur", "level": 3 },
-  { "name": "Akatsuchi", "tag": "Pengawal Tsuchikage", "hint": "Pengawal Ohnoki bertubuh besar yang bisa memuntahkan golem batu", "level": 3 },
-  { "name": "C", "tag": "Ninja Sensor Kumo", "hint": "Pengawal Raikage ke-4, ninja medis dan sensor berambut pirang", "level": 3 },
-  { "name": "Omoi", "tag": "Ninja Kumo", "hint": "Murid Killer Bee yang selalu overthinking cemas dan mengemut lolipop", "level": 3 },
-  { "name": "Karui", "tag": "Ninja Kumo", "hint": "Murid Killer Bee berambut merah berkulit gelap yang galak dan emosian", "level": 3 },
-  { "name": "Samui", "tag": "Ninja Kumo", "hint": "Ketua tim Kumo berambut pirang dingin berwajah datar", "level": 3 },
-  { "name": "Mifune", "tag": "Jenderal Samurai", "hint": "Pemimpin samurai Negeri Besi, ahli tebasan kilat Iado pedang Meito", "level": 3 },
-  { "name": "Hanzo si Salamander", "tag": "Pemimpin Amegakure", "hint": "Ninja legendaris racun salamander yang memberi gelar Legenda Sannin", "level": 3 },
-  { "name": "Tayuya", "tag": "4 Ninja Bunyi", "hint": "Kunoichi bertopi pemarah pengguna seruling melodi iblis Doki Genjutsu", "level": 3 },
-  { "name": "Kidomaru", "tag": "4 Ninja Bunyi", "hint": "Ninja berlengan enam pengguna benang jaring laba-laba dan panah emas", "level": 3 },
-  { "name": "Jirobo", "tag": "4 Ninja Bunyi", "hint": "Ninja bertubuh besar pemakan chakra pengguna kubah tanah Doton Doryu", "level": 3 },
-  { "name": "Sakon & Ukon", "tag": "4 Ninja Bunyi", "hint": "Dua saudara kembar yang tubuhnya bisa menyatu dan merasuki musuh", "level": 3 },
-  { "name": "Fugaku Uchiha", "tag": "Pemimpin Uchiha", "hint": "Ayah dari Sasuke dan Itachi, kapten Polisi Konoha", "level": 3 },
-  { "name": "Rin Nohara", "tag": "Tim Minato", "hint": "Ninja medis rekan Kakashi dan Obito, jinchuriki Sanbi", "level": 3 },
-  { "name": "Sakumo Hatake (Taring Putih)", "tag": "Legenda Konoha", "hint": "Ayah Kakashi, pahlawan bertaring putih Konoha", "level": 3 },
-  { "name": "Might Duy", "tag": "Genin Abadi", "hint": "Ayah Might Guy, pembuka 8 Gerbang Hachimon lawan 7 Pendekar Pedang", "level": 3 },
-  { "name": "Dan Kato", "tag": "Jonin Konoha", "hint": "Kekasih Tsunade, pengguna Reika no Jutsu arwah gentayangan", "level": 3 },
-  { "name": "Hayate Gekko", "tag": "Wasit Chunin", "hint": "Ninja pedang batuk-batuk yang mengawasi ujian Chunin prelim", "level": 3 },
-  { "name": "Yugao Uzuki", "tag": "ANBU Konoha", "hint": "Kunoichi ANBU berambut ungu, kekasih Hayate Gekko", "level": 3 },
-  { "name": "Genma Shiranui", "tag": "Pengawal Hokage", "hint": "Jonin santai yang selalu menggigit jarum senbon besi di mulut", "level": 3 },
-  { "name": "Ibiki Morino", "tag": "Interogasi Konoha", "hint": "Komandan penyiksa dan interogator ANBU berkepala penuh luka", "level": 3 },
-  { "name": "Kotetsu Hagane", "tag": "Chunin Konoha", "hint": "Partner Izumo, penjaga gerbang masuk desa Konoha, bawa perban hidung", "level": 3 },
-  { "name": "Izumo Kamizuki", "tag": "Chunin Konoha", "hint": "Partner Kotetsu, penjaga gerbang Konoha pengguna jurus ludah lengket Mizuame", "level": 3 },
-  { "name": "Shikaku Nara", "tag": "Ketua Klan Nara", "hint": "Ayah Shikamaru, komandan strategi jenius aliansi Shinobi", "level": 3 },
-  { "name": "Inoichi Yamanaka", "tag": "Ketua Klan Yamanaka", "hint": "Ayah Ino, kepala divisi intelijen sensor dan telepati Konoha", "level": 3 },
-  { "name": "Choza Akimichi", "tag": "Ketua Klan Akimichi", "hint": "Ayah Choji, bertubuh raksasa pengguna tongkat pertempuran", "level": 3 },
-  { "name": "Hiashi Hyuga", "tag": "Ketua Klan Hyuga", "hint": "Ayah Hinata dan Hanabi, pemimpin keluarga utama klan Hyuga", "level": 3 },
-  { "name": "Hanabi Hyuga", "tag": "Klan Hyuga", "hint": "Adik kandung Hinata, pewaris bakat Juuken keluarga utama", "level": 3 },
-  { "name": "Yahiko", "tag": "Pendiri Akatsuki", "hint": "Sahabat Nagato dan Konan, jasadnya dijadikan Pain Tendo", "level": 3 },
-  { "name": "Utakata", "tag": "Jinchuriki Ekor 6", "hint": "Ninja pelarian Kiri berbaju biru pembawa pipa gelembung busa Saiken", "level": 3 },
-
-  { "name": "Rasa (Kazekage ke-4)", "tag": "Kazekage ke-4", "hint": "Ayah Gaara, pengendali debu pasir emas Sakin", "level": 4 },
-  { "name": "Raikage ke-3 (Sandaime Raikage)", "tag": "Raikage ke-3", "hint": "Raikage terkuat dengan tusukan satu jari nukite dan zirah petir tebal", "level": 4 },
-  { "name": "Mu (Tsuchikage ke-2)", "tag": "Tsuchikage ke-2", "hint": "Manusia tanpa hawa keberadaan berbalut perban, guru Ohnoki Jinton", "level": 4 },
-  { "name": "Gengetsu Hozuki", "tag": "Mizukage ke-2", "hint": "Mizukage tanpa alis berkumis tipis, pengguna summon kerang ilusi mirage", "level": 4 },
-  { "name": "Yugito Nii", "tag": "Jinchuriki Ekor 2", "hint": "Kunoichi Kumo, jinchuriki kucing api biru Matatabi", "level": 4 },
-  { "name": "Yagura Karatachi", "tag": "Mizukage ke-4", "hint": "Mizukage bertubuh anak-anak bertongkat kait, jinchuriki kura-kura Isobu", "level": 4 },
-  { "name": "Roshi", "tag": "Jinchuriki Ekor 4", "hint": "Kakek jinchuriki monyet api lahar Son Goku dari Iwagakure", "level": 4 },
-  { "name": "Han", "tag": "Jinchuriki Ekor 5", "hint": "Ninja bertubuh tinggi besar berzirah uap merah, jinchuriki kuda Kokuo", "level": 4 },
-  { "name": "Fu", "tag": "Jinchuriki Ekor 7", "hint": "Kunoichi ceria dari Takigakure, jinchuriki kumbang bertanduk Chomei", "level": 4 },
-  { "name": "Mangetsu Hozuki", "tag": "7 Pendekar Pedang Kiri", "hint": "Kakak Suigetsu, ninja jenius yang mampu menguasai 7 pedang Kirigakure", "level": 4 },
-  { "name": "Kushimaru Kuriarare", "tag": "7 Pendekar Pedang Kiri", "hint": "Pengguna pedang jarum jahit panjang Nuibari bertopeng ANBU Kiri", "level": 4 },
-  { "name": "Jinpachi Munashi", "tag": "7 Pendekar Pedang Kiri", "hint": "Pengguna pedang gulungan kertas peledak tanpa henti Shibuki", "level": 4 },
-  { "name": "Ameyuri Ringo", "tag": "7 Pendekar Pedang Kiri", "hint": "Kunoichi berambut merah bertaring pengguna pedang petir kembar Kiba", "level": 4 },
-  { "name": "Jinin Akebino", "tag": "7 Pendekar Pedang Kiri", "hint": "Ninja berambut kuncir pengguna pedang kapak palu penghancur Kabutowari", "level": 4 },
-  { "name": "Fuguki Suikazan", "tag": "7 Pendekar Pedang Kiri", "hint": "Ninja bertubuh gemuk raksasa pemilik pedang Samehada sebelum dikhianati Kisame", "level": 4 },
-  { "name": "Hizashi Hyuga", "tag": "Keluarga Cabang Hyuga", "hint": "Ayah Neji, saudara kembar Hiashi yang berkorban demi desa", "level": 4 },
-  { "name": "Mito Uzumaki", "tag": "Klan Uzumaki", "hint": "Istri Hokage Pertama Hashirama, jinchuriki Kyubi pertama", "level": 4 },
-  { "name": "Ebizo", "tag": "Tetua Sunagakure", "hint": "Adik laki-laki Nenek Chiyo yang pendiam dan suka memancing", "level": 4 },
-  { "name": "Pakura", "tag": "Pahlawan Suna", "hint": "Kunoichi pengguna Kekkei Genkai Shakuton elemen hangus membara", "level": 4 },
-  { "name": "Juubi (Ekor Sepuluh / Shinju)", "tag": "Pohon Dewa Shinju", "hint": "Gabungan seluruh Bijuu bermata satu Rinne Sharingan", "level": 4 },
-  { "name": "Hagoromo Otsutsuki (Rikudo Sennin)", "tag": "Petapa Enam Jalan", "hint": "Pencipta Ninshu, anak pertama Kaguya, pembagi chakra 9 Bijuu", "level": 4 },
-  { "name": "Hamura Otsutsuki", "tag": "Leluhur Klan Hyuga", "hint": "Saudara kembar Hagoromo yang pindah menjaga bulan, pemilik Tenseigan", "level": 4 },
-  { "name": "Indra Otsutsuki", "tag": "Leluhur Uchiha", "hint": "Anak sulung Hagoromo penemu segel tangan ninjutsu, pendahulu Sharingan", "level": 4 },
-  { "name": "Asura Otsutsuki", "tag": "Leluhur Senju & Uzumaki", "hint": "Anak bungsu Hagoromo yang mewarisi tekad chakra dan cinta persaudaraan", "level": 4 },
-  { "name": "Gamabunta", "tag": "Bos Katak Myoboku", "hint": "Katak raksasa perokok pembawa pipa cangklong dan pedang tanto", "level": 4 },
-  { "name": "Fukasaku & Shima", "tag": "Tetua Katak Sennin", "hint": "Sepasang kakek nenek katak kecil di bahu Jiraiya pengajar Sage Mode", "level": 4 },
-  { "name": "Katsuyu", "tag": "Siput Shikkotsu", "hint": "Siput raksasa penyembuh yang bisa membelah tubuh ribuan kali summon Tsunade", "level": 4 },
-  { "name": "Manda", "tag": "Raja Ular Ryuchi", "hint": "Ular raksasa ungu raksasa pemarah haus tumbal korban summon Orochimaru", "level": 4 },
-  { "name": "Enma", "tag": "Raja Kera", "hint": "Kera tua bertaring putih summon Hiruzen yang bisa berubah jadi tongkat berlian Nyoi", "level": 4 },
-  { "name": "Pakkun", "tag": "Ninken Anjing Pelacak", "hint": "Anjing pug kecil bertopi Konoha dengan telapak kaki super wangi", "level": 4 },
-  { "name": "Ebisu", "tag": "Guru Khusus Konoha", "hint": "Guru privat Konohamaru berkacamata hitam, dikalahkan Harem no Jutsu", "level": 4 },
-  { "name": "Teuchi (Ichiraku / Paman Ramen)", "tag": "Warga Sipil Legendaris", "hint": "Pemilik kedai ramen Ichiraku favorit Naruto", "level": 4 }
+  {
+    "name": "Naruto Uzumaki",
+    "tag": "Hokage / Tim 7",
+    "hint": "Jinchuriki Ekor Sembilan, suka ramen",
+    "level": 1,
+    "image": "/characters/naruto-uzumaki.png"
+  },
+  {
+    "name": "Sasuke Uchiha",
+    "tag": "Uchiha / Tim 7",
+    "hint": "Pengguna Sharingan & Rinnegan, Chidori",
+    "level": 1,
+    "image": "/characters/sasuke-uchiha.png"
+  },
+  {
+    "name": "Sakura Haruno",
+    "tag": "Ninja Medis / Tim 7",
+    "hint": "Murid Tsunade, pukulan super kuat",
+    "level": 1,
+    "image": "/characters/sakura-haruno.png"
+  },
+  {
+    "name": "Kakashi Hatake",
+    "tag": "Hokage ke-6 / Jounin",
+    "hint": "Copy Ninja, suka baca Icha Icha Paradise",
+    "level": 1,
+    "image": "/characters/kakashi-hatake.png"
+  },
+  {
+    "name": "Jiraiya (Ero-Sennin)",
+    "tag": "Legenda Sannin",
+    "hint": "Petapa Katak, penulis buku dewasa",
+    "level": 1,
+    "image": "/characters/jiraiya-ero-sennin.png"
+  },
+  {
+    "name": "Tsunade",
+    "tag": "Hokage ke-5 / Sannin",
+    "hint": "Cucu Hashirama, ahli medis & suka judi",
+    "level": 1,
+    "image": "/characters/tsunade.png"
+  },
+  {
+    "name": "Orochimaru",
+    "tag": "Legenda Sannin",
+    "hint": "Obsesi keabadian & jurus terlarang ular",
+    "level": 1,
+    "image": "/characters/orochimaru.png"
+  },
+  {
+    "name": "Itachi Uchiha",
+    "tag": "Akatsuki / Uchiha",
+    "hint": "Kakak Sasuke, ahli Genjutsu Tsukuyomi",
+    "level": 1,
+    "image": "/characters/itachi-uchiha.png"
+  },
+  {
+    "name": "Minato Namikaze",
+    "tag": "Hokage ke-4",
+    "hint": "Kilat Kuning Konoha, ayah Naruto",
+    "level": 1,
+    "image": "/characters/minato-namikaze.png"
+  },
+  {
+    "name": "Madara Uchiha",
+    "tag": "Legenda Uchiha",
+    "hint": "Pemicu Perang Dunia Shinobi ke-4, Susano'o sempurna",
+    "level": 1,
+    "image": "/characters/madara-uchiha.png"
+  },
+  {
+    "name": "Obito Uchiha (Tobi)",
+    "tag": "Akatsuki / Uchiha",
+    "hint": "Pengguna Kamui, topeng spiral oranye",
+    "level": 1,
+    "image": "/characters/obito-uchiha-tobi.png"
+  },
+  {
+    "name": "Pain / Nagato",
+    "tag": "Pemimpin Akatsuki",
+    "hint": "Pengguna Rinnegan, Shinra Tensei",
+    "level": 1,
+    "image": "/characters/pain-nagato.png"
+  },
+  {
+    "name": "Shikamaru Nara",
+    "tag": "Tim 10 / Penasihat",
+    "hint": "Jenius IQ 200, pemalas, jurus bayangan",
+    "level": 1,
+    "image": "/characters/shikamaru-nara.png"
+  },
+  {
+    "name": "Rock Lee",
+    "tag": "Tim Guy",
+    "hint": "Hanya bisa Taijutsu, alis tebal, baju ketat hijau",
+    "level": 1,
+    "image": "/characters/rock-lee.png"
+  },
+  {
+    "name": "Might Guy",
+    "tag": "Jounin Konoha",
+    "hint": "Binatang Buas Hijau Konoha, Gerbang ke-8 Hachimon",
+    "level": 1,
+    "image": "/characters/might-guy.png"
+  },
+  {
+    "name": "Gaara",
+    "tag": "Kazekage ke-5",
+    "hint": "Pengendali pasir, mantan jinchuriki Shukaku",
+    "level": 1,
+    "image": "/characters/gaara.png"
+  },
+  {
+    "name": "Hinata Hyuga",
+    "tag": "Klan Hyuga / Tim 8",
+    "hint": "Pemilik Byakugan, pemalu, istri Naruto",
+    "level": 1,
+    "image": "/characters/hinata-hyuga.png"
+  },
+  {
+    "name": "Neji Hyuga",
+    "tag": "Klan Hyuga / Tim Guy",
+    "hint": "Jenius Hyuga, Juuken & Kaiten",
+    "level": 1,
+    "image": "/characters/neji-hyuga.png"
+  },
+  {
+    "name": "Killer Bee",
+    "tag": "Kumo / Jinchuriki",
+    "hint": "Jinchuriki Hachibi (Ekor 8), suka ngerap",
+    "level": 1,
+    "image": "/characters/killer-bee.png"
+  },
+  {
+    "name": "Kurama (Kyubi)",
+    "tag": "Bijuu Ekor 9",
+    "hint": "Rubah oranye berekor sembilan",
+    "level": 1,
+    "image": "/characters/kurama-kyubi.png"
+  },
+  {
+    "name": "Hashirama Senju",
+    "tag": "Hokage Pertama",
+    "hint": "Dewa Shinobi, pengguna elemen kayu Mokuton",
+    "level": 1,
+    "image": "/characters/hashirama-senju.png"
+  },
+  {
+    "name": "Tobirama Senju",
+    "tag": "Hokage ke-2",
+    "hint": "Pencipta Hiraishin, Kage Bunshin, dan Edo Tensei",
+    "level": 1,
+    "image": "/characters/tobirama-senju.png"
+  },
+  {
+    "name": "Hiruzen Sarutobi",
+    "tag": "Hokage ke-3",
+    "hint": "Profesor Shinobi, kakek Konohamaru, summon Enma",
+    "level": 1,
+    "image": "/characters/hiruzen-sarutobi.png"
+  },
+  {
+    "name": "Deidara",
+    "tag": "Akatsuki / Iwa",
+    "hint": "Seni adalah ledakan! Mulut di telapak tangan",
+    "level": 1,
+    "image": "/characters/deidara.png"
+  },
+  {
+    "name": "Sasori",
+    "tag": "Akatsuki / Suna",
+    "hint": "Master boneka manusia dari Sunagakure",
+    "level": 1,
+    "image": "/characters/sasori.png"
+  },
+  {
+    "name": "Hidan",
+    "tag": "Akatsuki",
+    "hint": "Penganut ajaran Jashin, tubuh abadi berdarah",
+    "level": 1,
+    "image": "/characters/hidan.png"
+  },
+  {
+    "name": "Kakuzu",
+    "tag": "Akatsuki",
+    "hint": "Punya 5 jantung, mata duitan",
+    "level": 1,
+    "image": "/characters/kakuzu.png"
+  },
+  {
+    "name": "Konan",
+    "tag": "Akatsuki",
+    "hint": "Malaikat kertas pelindung Nagato",
+    "level": 1,
+    "image": "/characters/konan.png"
+  },
+  {
+    "name": "Zabuza Momochi",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Iblis dari Kirigakure, pedang Kubikiribocho",
+    "level": 1,
+    "image": "/characters/zabuza-momochi.png"
+  },
+  {
+    "name": "Haku",
+    "tag": "Kekkei Genkai Kiri",
+    "hint": "Pengendali es cermin kristal, setia ke Zabuza",
+    "level": 1,
+    "image": "/characters/haku.png"
+  },
+  {
+    "name": "Kiba Inuzuka & Akamaru",
+    "tag": "Tim 8",
+    "hint": "Ninja pengendali anjing, jurus Gatsuga",
+    "level": 2,
+    "image": "/characters/kiba-inuzuka-akamaru.png"
+  },
+  {
+    "name": "Shino Aburame",
+    "tag": "Tim 8",
+    "hint": "Ninja serangga pendiam berkacamata hitam",
+    "level": 2,
+    "image": "/characters/shino-aburame.png"
+  },
+  {
+    "name": "Ino Yamanaka",
+    "tag": "Tim 10",
+    "hint": "Jurus transfer pikiran Shintenshin no Jutsu",
+    "level": 2,
+    "image": "/characters/ino-yamanaka.png"
+  },
+  {
+    "name": "Choji Akimichi",
+    "tag": "Tim 10",
+    "hint": "Suka makan keripik, jurus pembesar tubuh Baika no Jutsu",
+    "level": 2,
+    "image": "/characters/choji-akimichi.png"
+  },
+  {
+    "name": "Asuma Sarutobi",
+    "tag": "Guru Tim 10",
+    "hint": "Suka merokok, senjata belati chakra angin",
+    "level": 2,
+    "image": "/characters/asuma-sarutobi.png"
+  },
+  {
+    "name": "Tenten",
+    "tag": "Tim Guy",
+    "hint": "Spesialis ratusan senjata dari gulungan ninja",
+    "level": 2,
+    "image": "/characters/tenten.png"
+  },
+  {
+    "name": "Temari",
+    "tag": "Suna / Tim Gaara",
+    "hint": "Kipas raksasa angin, kakak Gaara, istri Shikamaru",
+    "level": 2,
+    "image": "/characters/temari.png"
+  },
+  {
+    "name": "Kankuro",
+    "tag": "Suna / Tim Gaara",
+    "hint": "Pengendali boneka Karasu & Kuroari, cat wajah ungu",
+    "level": 2,
+    "image": "/characters/kankuro.png"
+  },
+  {
+    "name": "Sai",
+    "tag": "ANBU Root / Tim 7",
+    "hint": "Menggambar binatang hidup dengan tinta, senyum palsu",
+    "level": 2,
+    "image": "/characters/sai.png"
+  },
+  {
+    "name": "Yamato (Tenzo)",
+    "tag": "Jounin Konoha",
+    "hint": "Eksperimen Orochimaru, pengguna Mokuton kayu",
+    "level": 2,
+    "image": "/characters/yamato-tenzo.png"
+  },
+  {
+    "name": "Iruka Umino",
+    "tag": "Guru Akademi",
+    "hint": "Orang pertama yang mengakui Naruto, bekas luka di hidung",
+    "level": 2,
+    "image": "/characters/iruka-umino.png"
+  },
+  {
+    "name": "Konohamaru Sarutobi",
+    "tag": "Murid Naruto",
+    "hint": "Cucu Hokage ke-3, belajar Rasengan dari Naruto",
+    "level": 2,
+    "image": "/characters/konohamaru-sarutobi.png"
+  },
+  {
+    "name": "Kushina Uzumaki",
+    "tag": "Ibu Naruto",
+    "hint": "Habanero Berdarah Merah, mantan jinchuriki Kyubi",
+    "level": 2,
+    "image": "/characters/kushina-uzumaki.png"
+  },
+  {
+    "name": "Kisame Hoshigaki",
+    "tag": "Akatsuki / Kiri",
+    "hint": "Monster Kabut, pengguna pedang Samehada",
+    "level": 2,
+    "image": "/characters/kisame-hoshigaki.png"
+  },
+  {
+    "name": "Kabuto Yakushi",
+    "tag": "Anak Buah Orochimaru",
+    "hint": "Mata-mata berkacamata, pengguna Sage Ular",
+    "level": 2,
+    "image": "/characters/kabuto-yakushi.png"
+  },
+  {
+    "name": "Danzo Shimura",
+    "tag": "Pemimpin ANBU Root",
+    "hint": "Tangan penuh Sharingan dan sel Hashirama",
+    "level": 2,
+    "image": "/characters/danzo-shimura.png"
+  },
+  {
+    "name": "Suigetsu Hozuki",
+    "tag": "Tim Taka",
+    "hint": "Tubuh bisa berubah jadi air, pedang Zabuza",
+    "level": 2,
+    "image": "/characters/suigetsu-hozuki.png"
+  },
+  {
+    "name": "Karin Uzumaki",
+    "tag": "Tim Taka",
+    "hint": "Bisa menyembuhkan orang lewat gigitan, bucin Sasuke",
+    "level": 2,
+    "image": "/characters/karin-uzumaki.png"
+  },
+  {
+    "name": "Jugo",
+    "tag": "Tim Taka",
+    "hint": "Penyayang binatang tapi bisa hilang kendali mengamuk",
+    "level": 2,
+    "image": "/characters/jugo.png"
+  },
+  {
+    "name": "Kimimaro",
+    "tag": "5 Ninja Bunyi",
+    "hint": "Kekkei Genkai pengendali tulang Kaguya",
+    "level": 2,
+    "image": "/characters/kimimaro.png"
+  },
+  {
+    "name": "Mei Terumi",
+    "tag": "Mizukage ke-5",
+    "hint": "Elemen lava (Yoton) dan kabut asam uap (Futton)",
+    "level": 2,
+    "image": "/characters/mei-terumi.png"
+  },
+  {
+    "name": "Ohnoki",
+    "tag": "Tsuchikage ke-3",
+    "hint": "Kakek tua dengan jurus debu partikel Jinton",
+    "level": 2,
+    "image": "/characters/ohnoki.png"
+  },
+  {
+    "name": "A / Ay (Raikage ke-4)",
+    "tag": "Raikage ke-4",
+    "hint": "Baju zirah petir, saudara angkat Killer Bee",
+    "level": 2,
+    "image": "/characters/a-ay-raikage-ke-4.png"
+  },
+  {
+    "name": "Kaguya Otsutsuki",
+    "tag": "Leluhur Chakra",
+    "hint": "Ibu dari Hagoromo, kelinci bulan bertanduk",
+    "level": 2,
+    "image": "/characters/kaguya-otsutsuki.png"
+  },
+  {
+    "name": "Shisui Uchiha",
+    "tag": "Uchiha / Konoha",
+    "hint": "Pemilik Kotoamatsukami, Shunshin no Shisui, sahabat Itachi",
+    "level": 2,
+    "image": "/characters/shisui-uchiha.png"
+  },
+  {
+    "name": "Kurenai Yuhi",
+    "tag": "Guru Tim 8",
+    "hint": "Istri Asuma, ahli Genjutsu ilusi pohon Konoha",
+    "level": 2,
+    "image": "/characters/kurenai-yuhi.png"
+  },
+  {
+    "name": "Anko Mitarashi",
+    "tag": "Penguji Chunin",
+    "hint": "Mantan murid Orochimaru, penggemar dango manis",
+    "level": 2,
+    "image": "/characters/anko-mitarashi.png"
+  },
+  {
+    "name": "Shizune",
+    "tag": "Ninja Medis",
+    "hint": "Murid dan asisten setia Tsunade, pemilik babi Tonton",
+    "level": 2,
+    "image": "/characters/shizune.png"
+  },
+  {
+    "name": "Chiyo (Nenek Chiyo)",
+    "tag": "Tetua Sunagakure",
+    "hint": "Nenek Sasori, master pengendali 10 boneka putih Shirohigari",
+    "level": 2,
+    "image": "/characters/chiyo-nenek-chiyo.png"
+  },
+  {
+    "name": "Shukaku (Ichibi)",
+    "tag": "Bijuu Ekor 1",
+    "hint": "Monster tanuki rakun berpasir yang bermusuhan dengan Kurama",
+    "level": 2,
+    "image": "/characters/shukaku-ichibi.png"
+  },
+  {
+    "name": "Gyuki (Hachibi)",
+    "tag": "Bijuu Ekor 8",
+    "hint": "Monster banteng berkepala gurita bertanduk rekan setia Killer Bee",
+    "level": 2,
+    "image": "/characters/gyuki-hachibi.png"
+  },
+  {
+    "name": "Zetsu Hitam & Putih",
+    "tag": "Akatsuki",
+    "hint": "Kuro-Zetsu kehendak Kaguya dan Shiro-Zetsu klon Hashirama tumbuhan venus",
+    "level": 2,
+    "image": "/characters/zetsu-hitam-putih.png"
+  },
+  {
+    "name": "Darui",
+    "tag": "Tangan Kanan Raikage",
+    "hint": "Pengguna Raiton Petir Hitam dan elemen Ranton badai laser",
+    "level": 3,
+    "image": "/characters/darui.png"
+  },
+  {
+    "name": "Chojuro",
+    "tag": "Pengawal Mizukage",
+    "hint": "Pengguna pedang kembar Hiramekarei yang pemalu berkacamata",
+    "level": 3,
+    "image": "/characters/chojuro.png"
+  },
+  {
+    "name": "Kurotsuchi",
+    "tag": "Pengawal Tsuchikage",
+    "hint": "Cucu Ohnoki, kunoichi lincah pengguna Yoton semen kapur",
+    "level": 3,
+    "image": "/characters/kurotsuchi.png"
+  },
+  {
+    "name": "Akatsuchi",
+    "tag": "Pengawal Tsuchikage",
+    "hint": "Pengawal Ohnoki bertubuh besar yang bisa memuntahkan golem batu",
+    "level": 3,
+    "image": "/characters/akatsuchi.png"
+  },
+  {
+    "name": "C",
+    "tag": "Ninja Sensor Kumo",
+    "hint": "Pengawal Raikage ke-4, ninja medis dan sensor berambut pirang",
+    "level": 3,
+    "image": "/characters/c.png"
+  },
+  {
+    "name": "Omoi",
+    "tag": "Ninja Kumo",
+    "hint": "Murid Killer Bee yang selalu overthinking cemas dan mengemut lolipop",
+    "level": 3,
+    "image": "/characters/omoi.png"
+  },
+  {
+    "name": "Karui",
+    "tag": "Ninja Kumo",
+    "hint": "Murid Killer Bee berambut merah berkulit gelap yang galak dan emosian",
+    "level": 3,
+    "image": "/characters/karui.png"
+  },
+  {
+    "name": "Samui",
+    "tag": "Ninja Kumo",
+    "hint": "Ketua tim Kumo berambut pirang dingin berwajah datar",
+    "level": 3,
+    "image": "/characters/samui.png"
+  },
+  {
+    "name": "Mifune",
+    "tag": "Jenderal Samurai",
+    "hint": "Pemimpin samurai Negeri Besi, ahli tebasan kilat Iado pedang Meito",
+    "level": 3,
+    "image": "/characters/mifune.png"
+  },
+  {
+    "name": "Hanzo si Salamander",
+    "tag": "Pemimpin Amegakure",
+    "hint": "Ninja legendaris racun salamander yang memberi gelar Legenda Sannin",
+    "level": 3,
+    "image": "/characters/hanzo-si-salamander.png"
+  },
+  {
+    "name": "Tayuya",
+    "tag": "4 Ninja Bunyi",
+    "hint": "Kunoichi bertopi pemarah pengguna seruling melodi iblis Doki Genjutsu",
+    "level": 3,
+    "image": "/characters/tayuya.png"
+  },
+  {
+    "name": "Kidomaru",
+    "tag": "4 Ninja Bunyi",
+    "hint": "Ninja berlengan enam pengguna benang jaring laba-laba dan panah emas",
+    "level": 3,
+    "image": "/characters/kidomaru.png"
+  },
+  {
+    "name": "Jirobo",
+    "tag": "4 Ninja Bunyi",
+    "hint": "Ninja bertubuh besar pemakan chakra pengguna kubah tanah Doton Doryu",
+    "level": 3,
+    "image": "/characters/jirobo.png"
+  },
+  {
+    "name": "Sakon & Ukon",
+    "tag": "4 Ninja Bunyi",
+    "hint": "Dua saudara kembar yang tubuhnya bisa menyatu dan merasuki musuh",
+    "level": 3,
+    "image": "/characters/sakon-ukon.png"
+  },
+  {
+    "name": "Fugaku Uchiha",
+    "tag": "Pemimpin Uchiha",
+    "hint": "Ayah dari Sasuke dan Itachi, kapten Polisi Konoha",
+    "level": 3,
+    "image": "/characters/fugaku-uchiha.png"
+  },
+  {
+    "name": "Rin Nohara",
+    "tag": "Tim Minato",
+    "hint": "Ninja medis rekan Kakashi dan Obito, jinchuriki Sanbi",
+    "level": 3,
+    "image": "/characters/rin-nohara.png"
+  },
+  {
+    "name": "Sakumo Hatake (Taring Putih)",
+    "tag": "Legenda Konoha",
+    "hint": "Ayah Kakashi, pahlawan bertaring putih Konoha",
+    "level": 3,
+    "image": "/characters/sakumo-hatake-taring-putih.png"
+  },
+  {
+    "name": "Might Duy",
+    "tag": "Genin Abadi",
+    "hint": "Ayah Might Guy, pembuka 8 Gerbang Hachimon lawan 7 Pendekar Pedang",
+    "level": 3,
+    "image": "/characters/might-duy.png"
+  },
+  {
+    "name": "Dan Kato",
+    "tag": "Jonin Konoha",
+    "hint": "Kekasih Tsunade, pengguna Reika no Jutsu arwah gentayangan",
+    "level": 3,
+    "image": "/characters/dan-kato.png"
+  },
+  {
+    "name": "Hayate Gekko",
+    "tag": "Wasit Chunin",
+    "hint": "Ninja pedang batuk-batuk yang mengawasi ujian Chunin prelim",
+    "level": 3,
+    "image": "/characters/hayate-gekko.png"
+  },
+  {
+    "name": "Yugao Uzuki",
+    "tag": "ANBU Konoha",
+    "hint": "Kunoichi ANBU berambut ungu, kekasih Hayate Gekko",
+    "level": 3,
+    "image": "/characters/yugao-uzuki.png"
+  },
+  {
+    "name": "Genma Shiranui",
+    "tag": "Pengawal Hokage",
+    "hint": "Jonin santai yang selalu menggigit jarum senbon besi di mulut",
+    "level": 3,
+    "image": "/characters/genma-shiranui.png"
+  },
+  {
+    "name": "Ibiki Morino",
+    "tag": "Interogasi Konoha",
+    "hint": "Komandan penyiksa dan interogator ANBU berkepala penuh luka",
+    "level": 3,
+    "image": "/characters/ibiki-morino.png"
+  },
+  {
+    "name": "Kotetsu Hagane",
+    "tag": "Chunin Konoha",
+    "hint": "Partner Izumo, penjaga gerbang masuk desa Konoha, bawa perban hidung",
+    "level": 3,
+    "image": "/characters/kotetsu-hagane.png"
+  },
+  {
+    "name": "Izumo Kamizuki",
+    "tag": "Chunin Konoha",
+    "hint": "Partner Kotetsu, penjaga gerbang Konoha pengguna jurus ludah lengket Mizuame",
+    "level": 3,
+    "image": "/characters/izumo-kamizuki.png"
+  },
+  {
+    "name": "Shikaku Nara",
+    "tag": "Ketua Klan Nara",
+    "hint": "Ayah Shikamaru, komandan strategi jenius aliansi Shinobi",
+    "level": 3,
+    "image": "/characters/shikaku-nara.png"
+  },
+  {
+    "name": "Inoichi Yamanaka",
+    "tag": "Ketua Klan Yamanaka",
+    "hint": "Ayah Ino, kepala divisi intelijen sensor dan telepati Konoha",
+    "level": 3,
+    "image": "/characters/inoichi-yamanaka.png"
+  },
+  {
+    "name": "Choza Akimichi",
+    "tag": "Ketua Klan Akimichi",
+    "hint": "Ayah Choji, bertubuh raksasa pengguna tongkat pertempuran",
+    "level": 3,
+    "image": "/characters/choza-akimichi.png"
+  },
+  {
+    "name": "Hiashi Hyuga",
+    "tag": "Ketua Klan Hyuga",
+    "hint": "Ayah Hinata dan Hanabi, pemimpin keluarga utama klan Hyuga",
+    "level": 3,
+    "image": "/characters/hiashi-hyuga.png"
+  },
+  {
+    "name": "Hanabi Hyuga",
+    "tag": "Klan Hyuga",
+    "hint": "Adik kandung Hinata, pewaris bakat Juuken keluarga utama",
+    "level": 3,
+    "image": "/characters/hanabi-hyuga.png"
+  },
+  {
+    "name": "Yahiko",
+    "tag": "Pendiri Akatsuki",
+    "hint": "Sahabat Nagato dan Konan, jasadnya dijadikan Pain Tendo",
+    "level": 3,
+    "image": "/characters/yahiko.png"
+  },
+  {
+    "name": "Utakata",
+    "tag": "Jinchuriki Ekor 6",
+    "hint": "Ninja pelarian Kiri berbaju biru pembawa pipa gelembung busa Saiken",
+    "level": 3,
+    "image": "/characters/utakata.png"
+  },
+  {
+    "name": "Rasa (Kazekage ke-4)",
+    "tag": "Kazekage ke-4",
+    "hint": "Ayah Gaara, pengendali debu pasir emas Sakin",
+    "level": 4,
+    "image": "/characters/rasa-kazekage-ke-4.png"
+  },
+  {
+    "name": "Raikage ke-3 (Sandaime Raikage)",
+    "tag": "Raikage ke-3",
+    "hint": "Raikage terkuat dengan tusukan satu jari nukite dan zirah petir tebal",
+    "level": 4,
+    "image": "/characters/raikage-ke-3-sandaime-raikage.png"
+  },
+  {
+    "name": "Mu (Tsuchikage ke-2)",
+    "tag": "Tsuchikage ke-2",
+    "hint": "Manusia tanpa hawa keberadaan berbalut perban, guru Ohnoki Jinton",
+    "level": 4,
+    "image": "/characters/mu-tsuchikage-ke-2.png"
+  },
+  {
+    "name": "Gengetsu Hozuki",
+    "tag": "Mizukage ke-2",
+    "hint": "Mizukage tanpa alis berkumis tipis, pengguna summon kerang ilusi mirage",
+    "level": 4,
+    "image": "/characters/gengetsu-hozuki.png"
+  },
+  {
+    "name": "Yugito Nii",
+    "tag": "Jinchuriki Ekor 2",
+    "hint": "Kunoichi Kumo, jinchuriki kucing api biru Matatabi",
+    "level": 4,
+    "image": "/characters/yugito-nii.png"
+  },
+  {
+    "name": "Yagura Karatachi",
+    "tag": "Mizukage ke-4",
+    "hint": "Mizukage bertubuh anak-anak bertongkat kait, jinchuriki kura-kura Isobu",
+    "level": 4,
+    "image": "/characters/yagura-karatachi.png"
+  },
+  {
+    "name": "Roshi",
+    "tag": "Jinchuriki Ekor 4",
+    "hint": "Kakek jinchuriki monyet api lahar Son Goku dari Iwagakure",
+    "level": 4,
+    "image": "/characters/roshi.png"
+  },
+  {
+    "name": "Han",
+    "tag": "Jinchuriki Ekor 5",
+    "hint": "Ninja bertubuh tinggi besar berzirah uap merah, jinchuriki kuda Kokuo",
+    "level": 4,
+    "image": "/characters/han.png"
+  },
+  {
+    "name": "Fu",
+    "tag": "Jinchuriki Ekor 7",
+    "hint": "Kunoichi ceria dari Takigakure, jinchuriki kumbang bertanduk Chomei",
+    "level": 4,
+    "image": "/characters/fu.png"
+  },
+  {
+    "name": "Mangetsu Hozuki",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Kakak Suigetsu, ninja jenius yang mampu menguasai 7 pedang Kirigakure",
+    "level": 4,
+    "image": "/characters/mangetsu-hozuki.png"
+  },
+  {
+    "name": "Kushimaru Kuriarare",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Pengguna pedang jarum jahit panjang Nuibari bertopeng ANBU Kiri",
+    "level": 4,
+    "image": "/characters/kushimaru-kuriarare.png"
+  },
+  {
+    "name": "Jinpachi Munashi",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Pengguna pedang gulungan kertas peledak tanpa henti Shibuki",
+    "level": 4,
+    "image": "/characters/jinpachi-munashi.png"
+  },
+  {
+    "name": "Ameyuri Ringo",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Kunoichi berambut merah bertaring pengguna pedang petir kembar Kiba",
+    "level": 4,
+    "image": "/characters/ameyuri-ringo.png"
+  },
+  {
+    "name": "Jinin Akebino",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Ninja berambut kuncir pengguna pedang kapak palu penghancur Kabutowari",
+    "level": 4,
+    "image": "/characters/jinin-akebino.png"
+  },
+  {
+    "name": "Fuguki Suikazan",
+    "tag": "7 Pendekar Pedang Kiri",
+    "hint": "Ninja bertubuh gemuk raksasa pemilik pedang Samehada sebelum dikhianati Kisame",
+    "level": 4,
+    "image": "/characters/fuguki-suikazan.png"
+  },
+  {
+    "name": "Hizashi Hyuga",
+    "tag": "Keluarga Cabang Hyuga",
+    "hint": "Ayah Neji, saudara kembar Hiashi yang berkorban demi desa",
+    "level": 4,
+    "image": "/characters/hizashi-hyuga.png"
+  },
+  {
+    "name": "Mito Uzumaki",
+    "tag": "Klan Uzumaki",
+    "hint": "Istri Hokage Pertama Hashirama, jinchuriki Kyubi pertama",
+    "level": 4,
+    "image": "/characters/mito-uzumaki.png"
+  },
+  {
+    "name": "Ebizo",
+    "tag": "Tetua Sunagakure",
+    "hint": "Adik laki-laki Nenek Chiyo yang pendiam dan suka memancing",
+    "level": 4,
+    "image": "/characters/ebizo.png"
+  },
+  {
+    "name": "Pakura",
+    "tag": "Pahlawan Suna",
+    "hint": "Kunoichi pengguna Kekkei Genkai Shakuton elemen hangus membara",
+    "level": 4,
+    "image": "/characters/pakura.png"
+  },
+  {
+    "name": "Juubi (Ekor Sepuluh / Shinju)",
+    "tag": "Pohon Dewa Shinju",
+    "hint": "Gabungan seluruh Bijuu bermata satu Rinne Sharingan",
+    "level": 4,
+    "image": "/characters/juubi-ekor-sepuluh-shinju.png"
+  },
+  {
+    "name": "Hagoromo Otsutsuki (Rikudo Sennin)",
+    "tag": "Petapa Enam Jalan",
+    "hint": "Pencipta Ninshu, anak pertama Kaguya, pembagi chakra 9 Bijuu",
+    "level": 4,
+    "image": "/characters/hagoromo-otsutsuki-rikudo-sennin.png"
+  },
+  {
+    "name": "Hamura Otsutsuki",
+    "tag": "Leluhur Klan Hyuga",
+    "hint": "Saudara kembar Hagoromo yang pindah menjaga bulan, pemilik Tenseigan",
+    "level": 4,
+    "image": "/characters/hamura-otsutsuki.png"
+  },
+  {
+    "name": "Indra Otsutsuki",
+    "tag": "Leluhur Uchiha",
+    "hint": "Anak sulung Hagoromo penemu segel tangan ninjutsu, pendahulu Sharingan",
+    "level": 4,
+    "image": "/characters/indra-otsutsuki.png"
+  },
+  {
+    "name": "Asura Otsutsuki",
+    "tag": "Leluhur Senju & Uzumaki",
+    "hint": "Anak bungsu Hagoromo yang mewarisi tekad chakra dan cinta persaudaraan",
+    "level": 4,
+    "image": "/characters/asura-otsutsuki.png"
+  },
+  {
+    "name": "Gamabunta",
+    "tag": "Bos Katak Myoboku",
+    "hint": "Katak raksasa perokok pembawa pipa cangklong dan pedang tanto",
+    "level": 4,
+    "image": "/characters/gamabunta.png"
+  },
+  {
+    "name": "Fukasaku & Shima",
+    "tag": "Tetua Katak Sennin",
+    "hint": "Sepasang kakek nenek katak kecil di bahu Jiraiya pengajar Sage Mode",
+    "level": 4,
+    "image": "/characters/fukasaku-shima.png"
+  },
+  {
+    "name": "Katsuyu",
+    "tag": "Siput Shikkotsu",
+    "hint": "Siput raksasa penyembuh yang bisa membelah tubuh ribuan kali summon Tsunade",
+    "level": 4,
+    "image": "/characters/katsuyu.png"
+  },
+  {
+    "name": "Manda",
+    "tag": "Raja Ular Ryuchi",
+    "hint": "Ular raksasa ungu raksasa pemarah haus tumbal korban summon Orochimaru",
+    "level": 4,
+    "image": "/characters/manda.png"
+  },
+  {
+    "name": "Enma",
+    "tag": "Raja Kera",
+    "hint": "Kera tua bertaring putih summon Hiruzen yang bisa berubah jadi tongkat berlian Nyoi",
+    "level": 4,
+    "image": "/characters/enma.png"
+  },
+  {
+    "name": "Pakkun",
+    "tag": "Ninken Anjing Pelacak",
+    "hint": "Anjing pug kecil bertopi Konoha dengan telapak kaki super wangi",
+    "level": 4,
+    "image": "/characters/pakkun.png"
+  },
+  {
+    "name": "Ebisu",
+    "tag": "Guru Khusus Konoha",
+    "hint": "Guru privat Konohamaru berkacamata hitam, dikalahkan Harem no Jutsu",
+    "level": 4,
+    "image": "/characters/ebisu.png"
+  },
+  {
+    "name": "Teuchi (Ichiraku / Paman Ramen)",
+    "tag": "Warga Sipil Legendaris",
+    "hint": "Pemilik kedai ramen Ichiraku favorit Naruto",
+    "level": 4,
+    "image": "/characters/teuchi-ichiraku-paman-ramen.png"
+  }
 ]

@@ -71,7 +71,8 @@ export function dealCards(room) {
       name: cardData.name,
       tag: cardData.tag || 'Shinobi',
       hint: cardData.hint || '',
-      level: cardData.level || 1
+      level: cardData.level || 1,
+      image: cardData.image || null
     };
     player.isGuessed = false;
     player.finishRank = null;
