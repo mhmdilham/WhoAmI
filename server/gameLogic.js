@@ -282,7 +282,10 @@ export const DISALLOWED_CLAN_STANDALONES = new Set([
   'hyuga', 'hyuuga', 'uchiha', 'uzumaki', 'sarutobi', 'senju',
   'haruno', 'hatake', 'nara', 'yamanaka', 'akimichi', 'inuzuka',
   'aburame', 'namikaze', 'hoshigaki', 'momochi', 'yakushi',
-  'otsutsuki', 'ootsutsuki', 'shimura', 'umino', 'hozuki', 'houzuki', 'terumi'
+  'otsutsuki', 'ootsutsuki', 'shimura', 'umino', 'hozuki', 'houzuki', 'terumi',
+  'kato', 'morino', 'mitarashi', 'yuhi', 'gekko', 'uzuki', 'nohara',
+  'hagane', 'kamizuki', 'shiranui', 'kuriarare', 'munashi', 'ringo',
+  'akebino', 'suikazan', 'karatachi', 'nii', 'might'
 ]);
 
 export function cleanText(str) {
@@ -308,6 +311,7 @@ export function getValidAnswers(cardName) {
   if (cleanFull) {
     answers.add(cleanFull);
     answers.add(normalizeVariants(cleanFull));
+    answers.add(cleanFull.replace(/\s+/g, ''));
   }
 
   const chunks = cardName.split(/[/&()]/).map(c => c.trim()).filter(Boolean);
@@ -320,19 +324,35 @@ export function getValidAnswers(cardName) {
     answers.add(cleanChunk.replace(/\s+/g, ''));
 
     const words = cleanChunk.split(' ');
+    // Allow reversed order for 2-word names (e.g. "uchiha sasuke" <-> "sasuke uchiha")
+    if (words.length === 2) {
+      const reversed = `${words[1]} ${words[0]}`;
+      answers.add(reversed);
+      answers.add(normalizeVariants(reversed));
+      answers.add(reversed.replace(/\s+/g, ''));
+    }
+
     if (words.length > 1) {
       const firstName = words[0];
-      if (firstName.length >= 2) {
+      if (firstName.length >= 2 && !['nenek', 'kakek', 'paman', 'bibi', 'taring', 'ekor', 'raikage', 'kazekage', 'tsuchikage', 'mizukage', 'hokage'].includes(firstName)) {
         answers.add(firstName);
       }
       if (cleanChunk === 'rock lee') answers.add('lee');
       if (cleanChunk === 'might guy') answers.add('guy');
+      if (cleanChunk === 'might duy') answers.add('duy');
       if (cleanChunk === 'killer bee') answers.add('bee');
+      if (cleanChunk === 'nenek chiyo' || cleanChunk.includes('chiyo')) answers.add('chiyo');
+      if (cleanChunk === 'hanzo si salamander') answers.add('hanzo');
     }
   }
 
   for (const clan of DISALLOWED_CLAN_STANDALONES) {
     answers.delete(clan);
+    answers.delete(normalizeVariants(clan));
+  }
+  const disallowedWords = ['nenek', 'kakek', 'paman', 'bibi', 'taring', 'ekor', 'raikage', 'kazekage', 'tsuchikage', 'mizukage', 'hokage'];
+  for (const dw of disallowedWords) {
+    answers.delete(dw);
   }
 
   return Array.from(answers);

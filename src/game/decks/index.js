@@ -5,7 +5,7 @@ export function getAvailableDecks() {
     {
       id: 'naruto',
       name: 'Naruto Shippuden 🍥',
-      description: '55+ karakter ninja, Kage, Akatsuki, Sannin, dan legenda shinobi',
+      description: '120+ karakter ninja canon, Kage, Akatsuki, Bijuu, Sannin, dan legenda shinobi',
       count: narutoDeck.length
     }
   ];
