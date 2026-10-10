@@ -11,7 +11,8 @@ import {
   Home,
   Copy,
   Check,
-  Medal
+  Medal,
+  UserX
 } from 'lucide-react';
 import { socket } from '../utils/socket';
 import { copyToClipboard } from '../utils/clipboard';
@@ -78,6 +79,13 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
   const handleBackToLobby = () => {
     if (!isHost) return;
     socket.emit('back_to_lobby');
+  };
+
+  const handleKickPlayer = (targetId, targetName) => {
+    if (!isHost) return;
+    if (window.confirm(`Keluarkan ${targetName} dari room?`)) {
+      socket.emit('kick_player', { targetPlayerId: targetId });
+    }
   };
 
   const handleCopyCode = () => {
@@ -362,29 +370,42 @@ export default function GameBoard({ room, myPlayerId, onLeave }) {
                   </div>
                 </div>
 
-                {player.isGuessed && (
-                  <span className={`px-2 py-0.5 rounded-full border text-[10px] font-bold flex items-center gap-1 ${
-                    player.finishRank === 1
-                      ? 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300'
-                      : player.finishRank === 2
-                      ? 'bg-slate-300/20 border-slate-300/40 text-slate-200'
-                      : player.finishRank === 3
-                      ? 'bg-amber-600/20 border-amber-600/40 text-amber-400'
-                      : 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
-                  }`}>
-                    {player.finishRank ? (
-                      <>
-                        <Medal className="w-3 h-3" />
-                        <span>Juara #{player.finishRank}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Trophy className="w-3 h-3" />
-                        <span>Tertebak!</span>
-                      </>
-                    )}
-                  </span>
-                )}
+                <div className="flex items-center gap-1.5">
+                  {player.isGuessed && (
+                    <span className={`px-2 py-0.5 rounded-full border text-[10px] font-bold flex items-center gap-1 ${
+                      player.finishRank === 1
+                        ? 'bg-yellow-500/20 border-yellow-500/40 text-yellow-300'
+                        : player.finishRank === 2
+                        ? 'bg-slate-300/20 border-slate-300/40 text-slate-200'
+                        : player.finishRank === 3
+                        ? 'bg-amber-600/20 border-amber-600/40 text-amber-400'
+                        : 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                    }`}>
+                      {player.finishRank ? (
+                        <>
+                          <Medal className="w-3 h-3" />
+                          <span>Juara #{player.finishRank}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Trophy className="w-3 h-3" />
+                          <span>Tertebak!</span>
+                        </>
+                      )}
+                    </span>
+                  )}
+
+                  {isHost && !isSelf && (
+                    <button
+                      type="button"
+                      onClick={() => handleKickPlayer(player.id, player.name)}
+                      className="p-1 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
+                      title={`Keluarkan ${player.name}`}
+                    >
+                      <UserX className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Card Body */}

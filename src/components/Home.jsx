@@ -1,9 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Users, ArrowRight, Shield, Mic, Gamepad2 } from 'lucide-react';
+import { Sparkles, Users, ArrowRight, Shield, Mic, Gamepad2, Dices } from 'lucide-react';
 import { socket } from '../utils/socket';
 
+const RANDOM_NICKNAMES = [
+  'Uzumaki Budi',
+  'Hokage Warkop',
+  'Shinobi Santai',
+  'Jounin Rebahan',
+  'Ninja Konoha',
+  'Akatsuki Nyasar',
+  'Genin Begadang',
+  'Anbu Misterius',
+  'Kage Kopi',
+  'Pendekar Seblak',
+  'Petapa Indomie',
+  'Chunin Gacor',
+  'Sasuke KW',
+  'Kakashi Santai',
+  'Itachi Gaple',
+  'Madara Cilok',
+  'Jiraiya Nongkrong',
+  'Tsunade Arisan',
+  'Orochimaru Cireng',
+  'Minato Satset'
+];
+
+function getRandomNickname() {
+  return RANDOM_NICKNAMES[Math.floor(Math.random() * RANDOM_NICKNAMES.length)];
+}
+
 export default function Home({ onJoinSuccess }) {
-  const [name, setName] = useState('');
+  // Load saved nickname from localStorage cache
+  const [name, setName] = useState(() => {
+    try {
+      return localStorage.getItem('whoami_saved_nickname') || '';
+    } catch (e) {
+      return '';
+    }
+  });
+
   const [roomCode, setRoomCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -17,25 +52,46 @@ export default function Home({ onJoinSuccess }) {
     }
   }, []);
 
+  const handleNameChange = (val) => {
+    setName(val);
+    try {
+      localStorage.setItem('whoami_saved_nickname', val);
+    } catch (e) {}
+  };
+
+  const handleRollRandomName = () => {
+    const picked = getRandomNickname();
+    setName(picked);
+    try {
+      localStorage.setItem('whoami_saved_nickname', picked);
+    } catch (e) {}
+    setError('');
+  };
+
   const handleCreateRoom = (e) => {
     e.preventDefault();
+    // Auto-pick random name if left empty
+    const finalName = name.trim() || getRandomNickname();
     if (!name.trim()) {
-      setError('Masukkan nama atau nickname kamu dulu!');
-      return;
+      setName(finalName);
+      try {
+        localStorage.setItem('whoami_saved_nickname', finalName);
+      } catch (e) {}
     }
+
     setError('');
     setLoading(true);
 
-    socket.emit('create_room', { hostName: name.trim() }, (response) => {
+    socket.emit('create_room', { hostName: finalName }, (response) => {
       setLoading(false);
       if (response.success) {
         sessionStorage.setItem('whoami_session', JSON.stringify({
           roomCode: response.roomCode,
-          playerName: name.trim(),
+          playerName: finalName,
           playerToken: response.playerToken,
           isHost: true
         }));
-        onJoinSuccess({ roomCode: response.roomCode, playerName: name.trim() });
+        onJoinSuccess({ roomCode: response.roomCode, playerName: finalName });
       } else {
         setError(response.error || 'Gagal membuat room!');
       }
@@ -44,10 +100,15 @@ export default function Home({ onJoinSuccess }) {
 
   const handleJoinRoom = (e) => {
     e.preventDefault();
+    // Auto-pick random name if left empty
+    const finalName = name.trim() || getRandomNickname();
     if (!name.trim()) {
-      setError('Masukkan nama atau nickname kamu dulu!');
-      return;
+      setName(finalName);
+      try {
+        localStorage.setItem('whoami_saved_nickname', finalName);
+      } catch (e) {}
     }
+
     if (!roomCode.trim()) {
       setError('Masukkan 4 digit kode room!');
       return;
@@ -55,15 +116,16 @@ export default function Home({ onJoinSuccess }) {
     setError('');
     setLoading(true);
 
-    socket.emit('join_room', { roomCode: roomCode.trim().toUpperCase(), playerName: name.trim() }, (response) => {
+    socket.emit('join_room', { roomCode: roomCode.trim().toUpperCase(), playerName: finalName }, (response) => {
       setLoading(false);
       if (response.success) {
         sessionStorage.setItem('whoami_session', JSON.stringify({
           roomCode: response.roomCode,
-          playerName: name.trim(),
-          playerToken: response.playerToken
+          playerName: finalName,
+          playerToken: response.playerToken,
+          isHost: false
         }));
-        onJoinSuccess({ roomCode: response.roomCode, playerName: name.trim() });
+        onJoinSuccess({ roomCode: response.roomCode, playerName: finalName });
       } else {
         setError(response.error || 'Gagal bergabung ke room!');
       }
@@ -93,20 +155,39 @@ export default function Home({ onJoinSuccess }) {
           </div>
         )}
 
-        {/* Nickname Input */}
+        {/* Nickname Input with Cache & Random Dice */}
         <div className="mb-6">
-          <label className="block text-xs font-semibold text-slate-300 mb-2 uppercase tracking-wider">
-            Nama / Nickname Kamu
-          </label>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              Nama / Nickname Kamu
+            </label>
+            <button
+              type="button"
+              onClick={handleRollRandomName}
+              className="text-xs text-orange-400 hover:text-orange-300 flex items-center gap-1 font-semibold cursor-pointer transition-all"
+              title="Acak nama panggilan"
+            >
+              <Dices className="w-3.5 h-3.5" />
+              <span>Acak Nama</span>
+            </button>
+          </div>
           <div className="relative">
             <input
               type="text"
               maxLength={16}
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Contoh: Uzumaki Budi"
-              className="w-full bg-slate-950/70 border border-slate-700/80 rounded-2xl px-4 py-3.5 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all font-medium text-base"
+              onChange={(e) => handleNameChange(e.target.value)}
+              placeholder="Contoh: Uzumaki Budi (atau acak nama)"
+              className="w-full bg-slate-950/70 border border-slate-700/80 rounded-2xl px-4 py-3.5 pr-12 text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all font-medium text-base"
             />
+            <button
+              type="button"
+              onClick={handleRollRandomName}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-xl text-slate-400 hover:text-orange-400 hover:bg-orange-500/10 transition-all cursor-pointer"
+              title="Klik untuk acak nama otomatis"
+            >
+              <Dices className="w-4 h-4" />
+            </button>
           </div>
         </div>
 

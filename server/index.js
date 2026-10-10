@@ -11,6 +11,7 @@ import {
   createRoom,
   joinRoom,
   removePlayer,
+  kickPlayer,
   startGame,
   submitSecretCard,
   dealCards,
@@ -241,7 +242,29 @@ io.on('connection', (socket) => {
     if (callback) callback({ success: true });
   });
 
-  // 12. Explicit Leave Room (When player clicks "Keluar")
+  // 12. Host Action: Kick Player
+  socket.on('kick_player', ({ targetPlayerId }, callback) => {
+    if (!currentRoomCode) return;
+    const room = rooms.get(currentRoomCode);
+    if (!room || room.hostId !== socket.id) {
+      if (callback) callback({ success: false, error: 'Hanya host yang bisa mengeluarkan pemain!' });
+      return;
+    }
+
+    const result = kickPlayer(room, socket.id, targetPlayerId);
+    if (result.error) {
+      if (callback) callback({ success: false, error: result.error });
+      return;
+    }
+
+    io.to(targetPlayerId).emit('kicked', 'Kamu telah dikeluarkan dari room oleh Host.');
+    io.in(targetPlayerId).socketsLeave(currentRoomCode);
+
+    broadcastRoom(room);
+    if (callback) callback({ success: true });
+  });
+
+  // 13. Explicit Leave Room (When player clicks "Keluar")
   socket.on('leave_room', () => {
     if (currentRoomCode) {
       const result = removePlayer(socket.id, true);

@@ -47,6 +47,13 @@ export default function App() {
       setIsReconnecting(false);
     });
 
+    socket.on('kicked', (reason) => {
+      alert(reason || 'Kamu telah dikeluarkan dari room oleh Host.');
+      sessionStorage.removeItem('whoami_session');
+      setRoom(null);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    });
+
     if (socket.connected) {
       setMyPlayerId(socket.id);
       attemptReconnect();
@@ -55,6 +62,7 @@ export default function App() {
     return () => {
       socket.off('connect');
       socket.off('room_update');
+      socket.off('kicked');
     };
   }, []);
 

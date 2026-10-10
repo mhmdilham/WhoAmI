@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut, Link2 } from 'lucide-react';
+import { Copy, Check, Play, Crown, Users, Sparkles, BookOpen, PenTool, LogOut, Link2, UserX } from 'lucide-react';
 import { socket } from '../utils/socket';
 import { copyToClipboard } from '../utils/clipboard';
 
@@ -10,6 +10,13 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
 
   const isHost = room.hostId === myPlayerId;
   const myPlayer = room.players.find(p => p.id === myPlayerId);
+
+  const handleKickPlayer = (targetId, targetName) => {
+    if (!isHost) return;
+    if (window.confirm(`Keluarkan ${targetName} dari room?`)) {
+      socket.emit('kick_player', { targetPlayerId: targetId });
+    }
+  };
 
   const handleCopyCode = () => {
     copyToClipboard(room.code).then(() => {
@@ -190,7 +197,19 @@ export default function Lobby({ room, myPlayerId, onLeave }) {
                       </div>
                     </div>
                   </div>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Online"></span>
+                    {isHost && !isMe && (
+                      <button
+                        type="button"
+                        onClick={() => handleKickPlayer(player.id, player.name)}
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
+                        title={`Keluarkan ${player.name}`}
+                      >
+                        <UserX className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               );
             })}

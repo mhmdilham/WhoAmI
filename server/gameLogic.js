@@ -437,3 +437,52 @@ export function getMaskedRoomState(room, requestingSocketId) {
     })
   };
 }
+
+export function kickPlayer(room, hostSocketId, targetSocketId) {
+  if (room.hostId !== hostSocketId) return { error: 'Hanya host yang bisa mengeluarkan pemain!' };
+  if (hostSocketId === targetSocketId) return { error: 'Host tidak bisa mengeluarkan diri sendiri!' };
+
+  const targetIndex = room.players.findIndex(p => p.id === targetSocketId);
+  if (targetIndex === -1) return { error: 'Pemain tidak ditemukan!' };
+
+  const kickedPlayer = room.players[targetIndex];
+  room.players.splice(targetIndex, 1);
+
+  if (room.status === 'PLAYING') {
+    if (room.currentTurnIndex >= room.players.length) {
+      room.currentTurnIndex = 0;
+    }
+    const connectedPlayers = room.players.filter(p => p.isConnected);
+    const allFinished = connectedPlayers.length > 0 && connectedPlayers.every(p => p.isGuessed);
+    if (allFinished) {
+      room.status = 'GAME_OVER';
+    } else {
+      nextTurn(room);
+    }
+  } else if (room.status === 'SECRET_INPUT') {
+    const connectedPlayers = room.players.filter(p => p.isConnected);
+    const allSubmitted = connectedPlayers.length >= 2 && connectedPlayers.every(p => p.submittedCard !== null);
+    if (allSubmitted) {
+      const pool = connectedPlayers.map(p => ({
+        authorId: p.id,
+        cardName: p.submittedCard.name,
+        hint: p.submittedCard.hint
+      }));
+      const shuffled = derangementShuffle(pool);
+      connectedPlayers.forEach((player, index) => {
+        player.assignedCard = {
+          name: shuffled[index].cardName,
+          tag: 'Karakter Custom',
+          hint: shuffled[index].hint
+        };
+        player.isGuessed = false;
+        player.finishRank = null;
+        player.notes = '';
+      });
+      room.status = 'PLAYING';
+      room.currentTurnIndex = 0;
+    }
+  }
+
+  return { room, kickedPlayer };
+}

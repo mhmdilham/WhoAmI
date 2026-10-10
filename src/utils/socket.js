@@ -5,6 +5,7 @@ import {
   createRoom,
   joinRoom,
   removePlayer,
+  kickPlayer,
   startGame,
   submitSecretCard,
   dealCards,
@@ -139,6 +140,9 @@ class WebRTCSocket {
         break;
       case 'save_notes':
         this.handleSaveNotes(payload);
+        break;
+      case 'kick_player':
+        this.handleKickPlayer(payload, callback);
         break;
       case 'leave_room':
         this.handleLeaveRoom();
@@ -447,6 +451,10 @@ class WebRTCSocket {
         } else if (data.type === 'room_closed') {
           sessionStorage.removeItem('whoami_session');
           this.emitLocal('room_update', null);
+        } else if (data.type === 'kicked') {
+          sessionStorage.removeItem('whoami_session');
+          this.emitLocal('kicked', data.reason || 'Kamu telah dikeluarkan dari room oleh Host.');
+          this.emitLocal('room_update', null);
         }
       });
 
@@ -642,7 +650,40 @@ class WebRTCSocket {
     }
   }
 
-  // 12. Leave Room
+  // 12. Kick Player (Host Only)
+  handleKickPlayer({ targetPlayerId }, callback) {
+    if (!this.isHost) {
+      if (callback) callback({ success: false, error: 'Hanya host yang bisa mengeluarkan pemain!' });
+      return;
+    }
+    const room = rooms.get(this.currentRoomCode);
+    if (!room) {
+      if (callback) callback({ success: false, error: 'Room tidak ditemukan!' });
+      return;
+    }
+
+    const result = kickPlayer(room, this.id, targetPlayerId);
+    if (result.error) {
+      if (callback) callback({ success: false, error: result.error });
+      return;
+    }
+
+    const targetConn = this.guestConns.get(targetPlayerId);
+    if (targetConn && targetConn.open) {
+      try {
+        targetConn.send({ type: 'kicked', reason: 'Kamu telah dikeluarkan dari room oleh Host.' });
+      } catch (e) {}
+      setTimeout(() => {
+        try { targetConn.close(); } catch (e) {}
+      }, 300);
+    }
+    this.guestConns.delete(targetPlayerId);
+
+    this.broadcastRoom(room);
+    if (callback) callback({ success: true });
+  }
+
+  // 13. Leave Room
   handleLeaveRoom() {
     if (this.isHost) {
       // Notify all guests that room is closing
