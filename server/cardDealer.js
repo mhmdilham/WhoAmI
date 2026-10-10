@@ -27,26 +27,31 @@ export function derangementShuffle(submissions) {
 
 export function dealCards(room) {
   const fullDeck = loadDeck(room.settings.deckId);
-  const difficulty = room.settings.difficulty || 'all';
+  const difficulty = room.settings.difficulty;
+
+  const levelMap = {
+    genin: 1,
+    chunin: 2,
+    jonin: 3,
+    kage: 4,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4
+  };
+
+  let targetLevels = [];
+  if (Array.isArray(difficulty)) {
+    targetLevels = difficulty.map(d => levelMap[d]).filter(Boolean);
+  } else if (typeof difficulty === 'string' && difficulty !== 'all') {
+    if (levelMap[difficulty]) targetLevels = [levelMap[difficulty]];
+  }
 
   let filteredDeck = fullDeck;
-  if (difficulty && difficulty !== 'all') {
-    const levelMap = {
-      genin: 1,
-      chunin: 2,
-      jonin: 3,
-      kage: 4,
-      1: 1,
-      2: 2,
-      3: 3,
-      4: 4
-    };
-    const targetLevel = levelMap[difficulty];
-    if (targetLevel) {
-      const matched = fullDeck.filter(card => card.level === targetLevel);
-      if (matched.length >= room.players.length) {
-        filteredDeck = matched;
-      }
+  if (targetLevels.length > 0 && targetLevels.length < 4) {
+    const matched = fullDeck.filter(card => targetLevels.includes(card.level));
+    if (matched.length >= room.players.length) {
+      filteredDeck = matched;
     }
   }
 

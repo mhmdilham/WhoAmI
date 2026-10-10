@@ -28,7 +28,7 @@ export function createRoom(roomCode, hostSocketId, hostName, playerToken = null)
     settings: {
       mode: 'preset', // 'preset' | 'custom'
       deckId: 'naruto',
-      difficulty: 'all' // 'all' | 'genin' | 'chunin' | 'jonin' | 'kage'
+      difficulty: ['genin', 'chunin', 'jonin', 'kage'] // array of selected levels
     },
     players: [
       {

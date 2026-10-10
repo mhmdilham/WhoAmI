@@ -14,13 +14,20 @@ export default function GameHeader({
   onLeave
 }) {
   const getDifficultyLabel = () => {
-    switch (difficulty) {
-      case 'genin': return '🟢 Genin (Easy)';
-      case 'chunin': return '🟡 Chunin (Medium)';
-      case 'jonin': return '🟠 Jonin (Hard)';
-      case 'kage': return '🔴 Kage (Hardcore)';
-      default: return '🌀 Semua Level';
-    }
+    if (!difficulty) return '🌀 Semua Level';
+    if (difficulty === 'all') return '🌀 Semua Level';
+
+    const levels = Array.isArray(difficulty) ? difficulty : [difficulty];
+    if (levels.length === 4) return '🌀 Semua Level';
+
+    const labelMap = {
+      genin: '🟢 Genin',
+      chunin: '🟡 Chunin',
+      jonin: '🟠 Jonin',
+      kage: '🔴 Kage'
+    };
+
+    return levels.map(l => labelMap[l] || l).join(' + ');
   };
 
   return (
