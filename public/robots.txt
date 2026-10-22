@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://who-am-i-three-green.vercel.app/sitemap.xml

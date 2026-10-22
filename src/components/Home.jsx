@@ -142,7 +142,7 @@ export default function Home({ onJoinSuccess }) {
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent font-bungee">
           WHO AM I?
         </h1>
-        <p className="text-slate-400 text-sm mt-2 max-w-xs mx-auto">
+        <p className="text-slate-300 text-sm mt-2 max-w-xs mx-auto">
           Tebak karakter di jidatmu! Ngobrol langsung lewat mic Discord atau saat ngumpul santai.
         </p>
       </div>
@@ -204,7 +204,7 @@ export default function Home({ onJoinSuccess }) {
         {/* Divider */}
         <div className="relative flex py-2 items-center mb-5">
           <div className="flex-grow border-t border-slate-800"></div>
-          <span className="flex-shrink mx-4 text-slate-500 text-xs uppercase tracking-widest font-semibold">atau gabung</span>
+          <span className="flex-shrink mx-4 text-slate-300 text-xs uppercase tracking-widest font-bold">atau gabung</span>
           <div className="flex-grow border-t border-slate-800"></div>
         </div>
 
@@ -230,12 +230,12 @@ export default function Home({ onJoinSuccess }) {
       </div>
 
       {/* Feature Badges */}
-      <div className="grid grid-cols-2 gap-3 w-full mt-6 text-xs text-slate-400">
-        <div className="p-3 rounded-2xl bg-slate-900/40 border border-slate-800/80 flex items-center gap-2.5">
+      <div className="grid grid-cols-2 gap-3 w-full mt-6 text-xs text-slate-300">
+        <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center gap-2.5">
           <Mic className="w-4 h-4 text-orange-400 shrink-0" />
           <span>Tanya jawab langsung di mic Discord</span>
         </div>
-        <div className="p-3 rounded-2xl bg-slate-900/40 border border-slate-800/80 flex items-center gap-2.5">
+        <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center gap-2.5">
           <Shield className="w-4 h-4 text-amber-400 shrink-0" />
           <span>Anti-cheat: Kartumu tertutup di layarmu</span>
         </div>
