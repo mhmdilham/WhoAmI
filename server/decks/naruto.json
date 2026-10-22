@@ -210,11 +210,11 @@
     "image": "/characters/haku.png"
   },
   {
-    "name": "Kiba Inuzuka & Akamaru",
+    "name": "Kiba Inuzuka",
     "tag": "Tim 8",
-    "hint": "Ninja pengendali anjing, jurus Gatsuga",
+    "hint": "Ninja bertaring pengendali anjing dari klan Inuzuka, jurus Gatsuga",
     "level": 2,
-    "image": "/characters/kiba-inuzuka-akamaru.png"
+    "image": "/characters/kiba-inuzuka.png"
   },
   {
     "name": "Shino Aburame",
@@ -364,9 +364,9 @@
     "image": "/characters/ohnoki.png"
   },
   {
-    "name": "A / Ay (Raikage ke-4)",
+    "name": "Ay (Raikage ke-4)",
     "tag": "Raikage ke-4",
-    "hint": "Baju zirah petir, saudara angkat Killer Bee",
+    "hint": "Pengguna zirah petir Raiton berkecepatan tinggi, saudara angkat Killer Bee",
     "level": 2,
     "image": "/characters/a-ay-raikage-ke-4.png"
   },
@@ -427,11 +427,18 @@
     "image": "/characters/gyuki-hachibi.png"
   },
   {
-    "name": "Zetsu Hitam & Putih",
+    "name": "Zetsu",
     "tag": "Akatsuki",
-    "hint": "Kuro-Zetsu kehendak Kaguya dan Shiro-Zetsu klon Hashirama tumbuhan venus",
+    "hint": "Makhluk berpenampilan tumbuhan venus, tubuh setengah hitam dan setengah putih",
     "level": 2,
-    "image": "/characters/zetsu-hitam-putih.png"
+    "image": "/characters/zetsu.png"
+  },
+  {
+    "name": "Akamaru",
+    "tag": "Ninken Tim 8",
+    "hint": "Anjing ninja setia Kiba Inuzuka, bulunya memerah saat menelan pil chakra",
+    "level": 3,
+    "image": "/characters/akamaru.png"
   },
   {
     "name": "Darui",
@@ -665,9 +672,9 @@
     "image": "/characters/rasa-kazekage-ke-4.png"
   },
   {
-    "name": "Raikage ke-3 (Sandaime Raikage)",
+    "name": "Raikage ke-3",
     "tag": "Raikage ke-3",
-    "hint": "Raikage terkuat dengan tusukan satu jari nukite dan zirah petir tebal",
+    "hint": "Punya tombak satu jari dan pertahanan mutlak, bertarung lawan 10.000 shinobi",
     "level": 4,
     "image": "/characters/raikage-ke-3-sandaime-raikage.png"
   },
@@ -791,9 +798,9 @@
     "image": "/characters/pakura.png"
   },
   {
-    "name": "Juubi (Ekor Sepuluh / Shinju)",
+    "name": "Juubi (Ekor Sepuluh)",
     "tag": "Pohon Dewa Shinju",
-    "hint": "Gabungan seluruh Bijuu bermata satu Rinne Sharingan",
+    "hint": "Gabungan semua Bijuu dan Pohon Dewa pemicu Mugen Tsukuyomi",
     "level": 4,
     "image": "/characters/juubi-ekor-sepuluh-shinju.png"
   },
@@ -833,9 +840,9 @@
     "image": "/characters/gamabunta.png"
   },
   {
-    "name": "Fukasaku & Shima",
-    "tag": "Tetua Katak Sennin",
-    "hint": "Sepasang kakek nenek katak kecil di bahu Jiraiya pengajar Sage Mode",
+    "name": "Fukasaku",
+    "tag": "Tetua Katak Myoboku",
+    "hint": "Kakek katak bijak dari Gunung Myoboku yang melatih Senjutsu Jiraiya dan Naruto",
     "level": 4,
     "image": "/characters/fukasaku-shima.png"
   },
@@ -875,9 +882,9 @@
     "image": "/characters/ebisu.png"
   },
   {
-    "name": "Teuchi (Ichiraku / Paman Ramen)",
+    "name": "Teuchi (Paman Ramen)",
     "tag": "Warga Sipil Legendaris",
-    "hint": "Pemilik kedai ramen Ichiraku favorit Naruto",
+    "hint": "Pemilik kedai Ramen Ichiraku yang selalu ramah memberi makan Naruto sejak kecil",
     "level": 4,
     "image": "/characters/teuchi-ichiraku-paman-ramen.png"
   }

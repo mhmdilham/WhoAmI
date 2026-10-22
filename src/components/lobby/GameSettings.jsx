@@ -4,7 +4,7 @@ import { Sparkles, BookOpen, PenTool, Shield, Check } from 'lucide-react';
 const LEVEL_CONFIG = [
   { id: 'easy', name: 'Easy (Mudah)', count: 30, desc: 'Karakter Paling Populer', icon: '🟢' },
   { id: 'medium', name: 'Medium (Sedang)', count: 32, desc: 'Karakter Inti & Terkenal', icon: '🟡' },
-  { id: 'hard', name: 'Hard (Sulit)', count: 32, desc: 'Arc Besar & Tokoh Perang', icon: '🟠' },
+  { id: 'hard', name: 'Hard (Sulit)', count: 33, desc: 'Arc Besar & Tokoh Perang', icon: '🟠' },
   { id: 'hardcore', name: 'Hardcore (Ekstrem)', count: 32, desc: '7 Pendekar & Lore Mendalam', icon: '🔴' }
 ];
 
@@ -67,7 +67,7 @@ export default function GameSettings({
   };
 
   const getSummaryListText = () => {
-    if (isAllSelected) return 'Semua Level (Acak 126 Shinobi)';
+    if (isAllSelected) return 'Semua Level (Acak 127 Shinobi)';
     return selectedLevels
       .map(id => {
         const item = LEVEL_CONFIG.find(l => l.id === id);

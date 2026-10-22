@@ -68,6 +68,16 @@ export function getValidAnswers(cardName) {
     }
   }
 
+  if (cleanFull === 'zetsu') {
+    answers.add('zetsu hitam');
+    answers.add('zetsu putih');
+  }
+  if (cleanFull.includes('ay')) {
+    answers.add('a');
+    answers.add('ay');
+    answers.add('raikage ay');
+  }
+
   for (const clan of DISALLOWED_CLAN_STANDALONES) {
     answers.delete(clan);
     answers.delete(normalizeVariants(clan));
