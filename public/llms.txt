@@ -1,0 +1,7 @@
+# WhoAmI - Party Minigame
+
+> Web minigame tebak karakter/identitas tersembunyi yang dimainkan secara online via voice chat (Discord / WhatsApp / Google Meet) atau saat nongkrong langsung.
+
+## Links
+- [Main Application](https://who-am-i-three-green.vercel.app/)
+- [Sitemap](https://who-am-i-three-green.vercel.app/sitemap.xml)

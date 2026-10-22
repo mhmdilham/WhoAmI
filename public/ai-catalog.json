@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agenticresourcediscovery.org/spec/v1/schema.json",
+  "name": "WhoAmI",
+  "description": "Party game web application for guessing secret character identity cards with friends via Discord voice or in-person.",
+  "url": "https://who-am-i-three-green.vercel.app"
+}

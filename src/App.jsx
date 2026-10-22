@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { socket } from './utils/socket';
 import Home from './components/Home';
-import Lobby from './components/Lobby';
-import SecretInput from './components/SecretInput';
-import GameBoard from './components/GameBoard';
+
+const Lobby = lazy(() => import('./components/Lobby'));
+const SecretInput = lazy(() => import('./components/SecretInput'));
+const GameBoard = lazy(() => import('./components/GameBoard'));
 
 export default function App() {
   const [room, setRoom] = useState(null);
@@ -89,32 +90,39 @@ export default function App() {
           />
         )}
 
-        {room && room.status === 'LOBBY' && (
-          <Lobby
-            room={room}
-            myPlayerId={myPlayerId}
-            onLeave={handleLeaveRoom}
-          />
-        )}
+        <Suspense fallback={
+          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-3 text-slate-400">
+            <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-sm font-medium">Memuat ruangan...</span>
+          </div>
+        }>
+          {room && room.status === 'LOBBY' && (
+            <Lobby
+              room={room}
+              myPlayerId={myPlayerId}
+              onLeave={handleLeaveRoom}
+            />
+          )}
 
-        {room && room.status === 'SECRET_INPUT' && (
-          <SecretInput
-            room={room}
-            myPlayerId={myPlayerId}
-          />
-        )}
+          {room && room.status === 'SECRET_INPUT' && (
+            <SecretInput
+              room={room}
+              myPlayerId={myPlayerId}
+            />
+          )}
 
-        {room && (room.status === 'PLAYING' || room.status === 'ROUND_OVER' || room.status === 'GAME_OVER') && (
-          <GameBoard
-            room={room}
-            myPlayerId={myPlayerId}
-            onLeave={handleLeaveRoom}
-          />
-        )}
+          {room && (room.status === 'PLAYING' || room.status === 'ROUND_OVER' || room.status === 'GAME_OVER') && (
+            <GameBoard
+              room={room}
+              myPlayerId={myPlayerId}
+              onLeave={handleLeaveRoom}
+            />
+          )}
+        </Suspense>
       </main>
 
       {/* Footer */}
-      <footer className="py-4 text-center text-xs text-slate-600 border-t border-slate-900">
+      <footer className="py-4 text-center text-xs text-slate-400 border-t border-slate-900">
         <p>WhoAmI? • Minigame Tongkrongan & Discord Voice</p>
       </footer>
     </div>
