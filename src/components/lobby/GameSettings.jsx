@@ -66,16 +66,6 @@ export default function GameSettings({
     }
   };
 
-  const getSummaryListText = () => {
-    if (isAllSelected) return 'Semua Level (Acak 127 Shinobi)';
-    return selectedLevels
-      .map(id => {
-        const item = LEVEL_CONFIG.find(l => l.id === id);
-        return item ? item.name.split(' ')[0] : id;
-      })
-      .join(', ');
-  };
-
   return (
     <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-5 sm:p-6 shadow-xl">
       {/* 1. Header Pilihan Mode */}
@@ -220,16 +210,6 @@ export default function GameSettings({
                 </button>
               );
             })}
-          </div>
-
-          {/* Fixed-Height Bottom Summary Bar (No shifting) */}
-          <div className="mt-3 py-1.5 px-3 rounded-xl bg-slate-950/60 border border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400 h-8">
-            <span className="truncate pr-2">
-              Kombinasi aktif: <strong className="text-orange-400 font-semibold">{getSummaryListText()}</strong>
-            </span>
-            <span className="shrink-0 text-slate-500 font-medium whitespace-nowrap">
-              {selectedLevels.length} dari 4 level
-            </span>
           </div>
         </div>
       )}
