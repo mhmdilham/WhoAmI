@@ -5,7 +5,13 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss()
+    tailwindcss(),
+    {
+      name: 'html-script-defer',
+      transformIndexHtml(html) {
+        return html.replace(/<script type="module"/g, '<script type="module" defer');
+      }
+    }
   ],
   server: {
     port: 5173,
