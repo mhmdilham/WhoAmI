@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Users, ArrowRight, Shield, Mic, Gamepad2, Dices } from 'lucide-react';
+import { Sparkles, ArrowRight, Gamepad2, Dices } from 'lucide-react';
 import { socket } from '../utils/socket';
 
 const RANDOM_NICKNAMES = [
@@ -226,18 +226,6 @@ export default function Home({ onJoinSuccess }) {
             <span>Gabung</span>
             <ArrowRight className="w-4 h-4" />
           </button>
-        </div>
-      </div>
-
-      {/* Feature Badges */}
-      <div className="grid grid-cols-2 gap-3 w-full mt-6 text-xs text-slate-300">
-        <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center gap-2.5">
-          <Mic className="w-4 h-4 text-orange-400 shrink-0" />
-          <span>Tanya jawab langsung di mic Discord</span>
-        </div>
-        <div className="p-3 rounded-2xl bg-slate-900/60 border border-slate-800 flex items-center gap-2.5">
-          <Shield className="w-4 h-4 text-amber-400 shrink-0" />
-          <span>Anti-cheat: Kartumu tertutup di layarmu</span>
         </div>
       </div>
     </div>
