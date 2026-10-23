@@ -39,6 +39,20 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3000;
 
+// Security Headers Middleware
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self' data:; connect-src 'self' https://*.peerjs.com wss://*.peerjs.com https://*.vercel.app wss://*.vercel.app; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';"
+  );
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), browsing-topics=()');
+  res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+  next();
+});
+
 // Production static file serving
 const distPath = path.join(__dirname, '../dist');
 if (fs.existsSync(distPath)) {
