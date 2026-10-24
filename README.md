@@ -20,7 +20,7 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" />
   <img src="https://img.shields.io/badge/Networking-P2P_WebRTC-339933?style=flat-square&logo=webrtc&logoColor=white" alt="WebRTC PeerJS" />
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100-00cc66?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse 100" />
-  <img src="https://img.shields.io/badge/License-ISC-blue?style=flat-square" alt="License" />
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License" />
 </p>
 
 ---
@@ -163,6 +163,8 @@ Jika Anda menyukai proyek ini, silakan beri ⭐ di [GitHub](https://github.com/m
 
 ---
 
-## 📄 Lisensi
+## 📄 Lisensi & Catatan Komunitas
 
-Proyek ini dilisensikan di bawah lisensi [ISC](LICENSE).
+Proyek ini dirilis di bawah lisensi [MIT License](LICENSE).
+
+> **Disclaimer:** *WhoAmI?* adalah proyek web game buatan penggemar non-komersial (*fan-made project*). Seluruh hak cipta nama karakter, aset ilustrasi, dan konsep dunia ninja adalah milik **Masashi Kishimoto**, **Shueisha**, **Studio Pierrot**, dan **TV Tokyo**.
