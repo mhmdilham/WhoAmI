@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://who-am-i-zepher.vercel.app/">
+  <a href="https://tebakshinobi.web.id">
     <img src="https://img.shields.io/badge/🎮_Mainkan_Sekarang-WhoAmI%3F-f97316?style=for-the-badge&logoColor=white" alt="Play Live" />
   </a>
 </p>
@@ -28,7 +28,7 @@
 ## 🌐 Tautan Langsung
 
 Mainkan langsung di browser tanpa perlu install aplikasi apapun:  
-👉 **[WhoAmI? - Tebak Karakter Tongkrongan](https://who-am-i-zepher.vercel.app/)**
+👉 **[WhoAmI? - Tebak Karakter Tongkrongan](https://tebakshinobi.web.id/)**
 
 ---
 
