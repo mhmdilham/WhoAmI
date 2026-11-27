@@ -1,4 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { socket } from './utils/socket';
 import Home from './components/Home';
 
@@ -139,6 +140,8 @@ export default function App() {
           </a>
         </p>
       </footer>
+
+      <SpeedInsights />
     </div>
   );
 }
