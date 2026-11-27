@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/mhmdilham/WhoAmI#readme",
   "dependencies": {
+    "@vercel/speed-insights": "^2.1.1",
     "canvas-confetti": "^1.9.4",
     "express": "^5.2.1",
     "lucide-react": "^1.50.0",
